@@ -48,4 +48,6 @@ dependencies {
     annotationProcessor 'com.google.auto.service:auto-service:1.1.1'
 
     api project(':timcommon')
+    api 'com.xy:dufubase:1.1.6'
+
 }

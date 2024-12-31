@@ -34,11 +34,16 @@ import com.tencent.qcloud.tuikit.tuichat.bean.message.ImageMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.LocationMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.MergeMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.QuoteMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.bean.message.RemindMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.ReplyMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.SoundMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.TextMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.TipsMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.VideoMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.config.CustomMessageType;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -126,7 +131,7 @@ public class ChatMessageParser {
     private static TUIMessageBean parseCustomMessage(V2TIMMessage v2TIMMessage) {
         //********************************************************************************
         //********************************************************************************
-        
+
         //********************************************************************************
         //********************************************************************************
         TUIMessageBean messageBean = parseCallingMessage(v2TIMMessage);
@@ -136,6 +141,11 @@ public class ChatMessageParser {
                 messageBean = null;
             }
             return messageBean;
+        }
+        //自定义消息解析
+        RemindMessageBean remindMessageBean = getRemindMessage(v2TIMMessage);
+        if (remindMessageBean != null) {
+            return remindMessageBean;
         }
         //********************************************************************************
         //********************************************************************************
@@ -168,6 +178,7 @@ public class ChatMessageParser {
             excludeFromHistory = false;
             businessID = getCustomBusinessId(v2TIMMessage);
         }
+
 
         if (excludeFromHistory) {
             // Return null means not display in the chat page
@@ -272,7 +283,7 @@ public class ChatMessageParser {
         }
         if (businessIdObj == null && customJsonMap != null) {
             if (customJsonMap.containsKey(TUIConstants.TUICustomerServicePlugin.CUSTOMER_SERVICE_MESSAGE_KEY)) {
-                String customerServiceSrcValue = (String)customJsonMap.get(TUIConstants.TUICustomerServicePlugin.CUSTOMER_SERVICE_BUSINESS_ID_SRC_KEY);
+                String customerServiceSrcValue = (String) customJsonMap.get(TUIConstants.TUICustomerServicePlugin.CUSTOMER_SERVICE_BUSINESS_ID_SRC_KEY);
                 businessId = TUIConstants.TUICustomerServicePlugin.CUSTOMER_SERVICE_MESSAGE_KEY + customerServiceSrcValue;
                 return businessId;
             }
@@ -333,15 +344,24 @@ public class ChatMessageParser {
         if (businessIdObj instanceof String) {
             businessId = (String) businessIdObj;
         }
+        if(TextUtils.isEmpty(businessId)&&customJsonMap!=null){
+            businessIdObj = customJsonMap.containsKey("call_type")? customJsonMap.get("call_type").toString():"";
+
+            if(businessIdObj==null||TextUtils.isEmpty(businessIdObj.toString())){
+                businessIdObj = customJsonMap.containsKey("callType")? customJsonMap.get("callType").toString():"";
+            }
+        }
+        if(businessIdObj!=null&&(businessIdObj.equals("1")||businessIdObj.equals("1.0")) ){
+            businessId="1";
+        }
         return businessId;
     }
 
     /**
-     *
      * Convert IMSDK's message bean list to TUIKit's message bean list
      *
-     * @param v2TIMMessageList IMSDK  bean 
-     * @return  TUIKit bean 
+     * @param v2TIMMessageList IMSDK  bean
+     * @return TUIKit bean
      */
     public static List<TUIMessageBean> parsePresentMessageList(List<V2TIMMessage> v2TIMMessageList) {
         if (v2TIMMessageList == null) {
@@ -412,7 +432,7 @@ public class ChatMessageParser {
         Gson gson = new Gson();
 
         if (data.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
-            
+
             // Compatible with tuikit prior to version 4.7
             TipsMessageBean messageBean = new TipsMessageBean();
             messageBean.setCommonAttribute(v2TIMMessage);
@@ -423,7 +443,7 @@ public class ChatMessageParser {
             return messageBean;
         } else {
             if (isTyping(customElem.getData())) {
-                
+
                 // Ignore being typed, it cannot be displayed as a real message
                 return null;
             }
@@ -533,7 +553,7 @@ public class ChatMessageParser {
             } else if (messageBean instanceof CustomLinkMessageBean) {
                 extra = ((CustomLinkMessageBean) messageBean).getText();
             } else if (messageBean instanceof SoundMessageBean || messageBean instanceof ImageMessageBean || messageBean instanceof VideoMessageBean
-                || messageBean instanceof LocationMessageBean || messageBean instanceof FaceMessageBean) {
+                    || messageBean instanceof LocationMessageBean || messageBean instanceof FaceMessageBean) {
                 extra = "";
             } else {
                 extra = messageBean.getExtra();
@@ -579,5 +599,26 @@ public class ChatMessageParser {
             }
         }
         return typeStr;
+    }
+
+    public static RemindMessageBean getRemindMessage(V2TIMMessage message) {
+        if (message == null || message.getElemType() != V2TIMMessage.V2TIM_ELEM_TYPE_CUSTOM) {
+            return null;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(new String(message.getCustomElem().getData()));
+            if (jsonObject.optInt("subCustomType") == CustomMessageType.CUSTOM_REMIND_MESSAGE_BUSINESS_ID) {
+                return new Gson().fromJson(jsonObject.toString(), RemindMessageBean.class);
+
+            }
+            System.out.println(jsonObject.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        if (message.getCustomElem() == null) {
+            return null;
+        }
+
+        return null;
     }
 }

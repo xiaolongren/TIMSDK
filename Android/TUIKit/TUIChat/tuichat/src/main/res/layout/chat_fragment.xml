@@ -1,11 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#FFF7F7F7"
     android:layout_height="match_parent">
-
-    <com.tencent.qcloud.tuikit.tuichat.classicui.widget.ChatView
-        android:id="@+id/chat_layout"
+    <com.tencent.qcloud.tuikit.timcommon.component.TitleBarLayout
+        android:id="@+id/chat_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="@dimen/page_title_height" />
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_listenerinfo_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="46dp"
+            android:layout_height="46dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/txt46"
+                        android:id="@+id/tv_numer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:text="倾诉人数"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/txt46"
+
+                        android:id="@+id/tv_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:text="评分"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/txt46"
+
+                        android:id="@+id/tv_hours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:text="经验时长"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:background="@drawable/bg_listenershenfen_green"
+                    android:id="@+id/tv_shenfen"
+                    tools:text="咨询师"
+                    android:textColor="#00AE66"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_comment_num"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/txt46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.tencent.qcloud.tuikit.tuichat.classicui.widget.ChatView
+            android:id="@+id/chat_layout"
+            android:background="#FFF7F7F7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:background="@drawable/bg_btn_callcontaner"
+            android:gravity="center"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/lv_tocall"
+
+            android:layout_toLeftOf="@id/lv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                 android:src="@drawable/ic_audio_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="立即通话"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="8dp"
+
+            android:background="@drawable/bg_btn_ordercontaner"
+            android:gravity="center"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/lv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="立即下单"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

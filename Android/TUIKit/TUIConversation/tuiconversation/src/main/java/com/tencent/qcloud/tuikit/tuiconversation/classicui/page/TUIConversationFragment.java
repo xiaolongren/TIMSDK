@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.sw.base.uitil.MScreenUtil;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.interfaces.TUIExtensionEventListener;
@@ -61,6 +62,8 @@ public class TUIConversationFragment extends Fragment {
         TUIConversationLog.d(TAG, "TUIConversationFragment onCreateView");
         mBaseView = inflater.inflate(R.layout.conversation_fragment, container, false);
         initView();
+        mBaseView.setPadding(0, MScreenUtil.getStatusBarHeight(getActivity()),0,0);
+
         return mBaseView;
     }
 

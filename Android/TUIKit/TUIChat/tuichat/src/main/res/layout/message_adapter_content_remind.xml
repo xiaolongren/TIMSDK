@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+     android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+        <TextView
+            android:background="@drawable/bg_remind"
+
+            android:layout_centerInParent="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+             android:id="@+id/tv_remindMsg"
+            android:layout_width="wrap_content"
+             android:ellipsize="middle"
+            android:text="金粉世家疯狂乱收费"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+
+
+
+
+</RelativeLayout>

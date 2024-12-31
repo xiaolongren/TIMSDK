@@ -11,8 +11,10 @@ import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
 import com.tencent.qcloud.tuikit.tuichat.TUIChatConstants;
 import com.tencent.qcloud.tuikit.tuichat.TUIChatService;
 import com.tencent.qcloud.tuikit.tuichat.bean.C2CChatInfo;
+import com.tencent.qcloud.tuikit.tuichat.bean.message.MCallingMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.MessageTypingBean;
 import com.tencent.qcloud.tuikit.tuichat.interfaces.C2CChatEventListener;
+import com.tencent.qcloud.tuikit.tuichat.util.IgnorMessageUtil;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
 
@@ -83,6 +85,7 @@ public class C2CChatPresenter extends ChatPresenter {
             @Override
             public void addMessage(TUIMessageBean messageBean, String chatId) {
                 if (TextUtils.equals(chatId, c2CChatInfo.getId())) {
+
                     addMessageToUI(messageBean, true);
                 }
             }

@@ -35,6 +35,7 @@ import com.tencent.qcloud.tuikit.tuichat.bean.GroupChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.CustomEvaluationMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.CustomLinkMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.CustomOrderMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.bean.message.MCallingMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.MessageTypingBean;
 import com.tencent.qcloud.tuikit.tuichat.config.TUIChatConfigs;
 import com.tencent.qcloud.tuikit.tuichat.interfaces.C2CChatEventListener;
@@ -49,6 +50,7 @@ import com.tencent.qcloud.tuikit.tuichat.presenter.GroupChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.util.ChatMessageBuilder;
 import com.tencent.qcloud.tuikit.tuichat.util.ChatMessageParser;
 import com.tencent.qcloud.tuikit.tuichat.util.DataStoreUtil;
+import com.tencent.qcloud.tuikit.tuichat.util.IgnorMessageUtil;
 import com.tencent.qcloud.tuikit.tuichat.util.OfflinePushInfoUtils;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
@@ -456,6 +458,9 @@ public class TUIChatService implements TUIInitializer, ITUIService, ITUINotifica
         V2TIMManager.getMessageManager().addAdvancedMsgListener(new V2TIMAdvancedMsgListener() {
             @Override
             public void onRecvNewMessage(V2TIMMessage msg) {
+                if(!IgnorMessageUtil.canAddToUi(msg)){
+                    return;
+                }
                 TUIMessageBean message = ChatMessageParser.parsePresentMessage(msg);
                 if (message == null) {
                     return;

@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -164,6 +165,26 @@ public class InputView extends LinearLayout implements View.OnClickListener, Tex
     private IMultimediaRecorder defaultVideoRecorder;
     private IMultimediaRecorder extVideoRecorder;
     private AudioRecorder defaultAudioRecorder;
+    public int leftFreeMsgcount;
+    public boolean inSameOrder;
+
+    public void setLeftFreeMsgcount(int leftFreeMsgcount) {
+        this.leftFreeMsgcount = leftFreeMsgcount;
+        getInputText().setHint("今日免费条数剩余"+leftFreeMsgcount+"条");
+
+    }
+
+    public void setInSameOrder(boolean inSameOrder) {
+        this.inSameOrder = inSameOrder;
+        if(inSameOrder){
+            getInputText().setHint("");
+
+        }else{
+            getInputText().setHint("今日免费条数剩余"+leftFreeMsgcount+"条");
+
+        }
+
+    }
 
     public InputView(Context context) {
         super(context);
@@ -395,6 +416,9 @@ public class InputView extends LinearLayout implements View.OnClickListener, Tex
                 }
                 if (mChatInputHandler != null) {
                     mChatInputHandler.onRecordStatusChanged(ChatInputHandler.RECORD_STOP);
+                }
+                if(!checkCanSend()){
+                   return;
                 }
                 sendAudioMessage(outputPath, duration);
             }
@@ -672,6 +696,9 @@ public class InputView extends LinearLayout implements View.OnClickListener, Tex
                 showSoftInput();
             }
         } else if (view.getId() == R.id.face_btn) {
+            if(!checkCanSend()){
+               return;
+            }
             mAudioInputSwitchButton.setImageResource(R.drawable.action_audio_selector);
             if (mCurrentState == STATE_VOICE_INPUT) {
                 mCurrentState = STATE_NONE_INPUT;
@@ -708,8 +735,23 @@ public class InputView extends LinearLayout implements View.OnClickListener, Tex
                 }
             }
         } else if (view.getId() == R.id.send_btn) {
-            sendTextMessage();
+            if(checkCanSend()){
+                sendTextMessage();
+            }
+
         }
+    }
+    boolean checkCanSend(){
+        if(inSameOrder){
+            return  true;
+        }
+        if(leftFreeMsgcount>0){
+           -- leftFreeMsgcount;
+           getInputText().setHint("今日免费条数剩余"+leftFreeMsgcount+"条");
+           return  true;
+        }
+        ToastUtil.show("免费条数已使用完了",true, Gravity.CENTER);
+        return  false;
     }
 
     private void sendTextMessage() {
