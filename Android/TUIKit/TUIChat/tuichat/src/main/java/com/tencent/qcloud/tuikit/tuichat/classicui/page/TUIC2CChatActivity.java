@@ -1,5 +1,6 @@
 package com.tencent.qcloud.tuikit.tuichat.classicui.page;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -55,21 +56,20 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                     finish();
                 } else {
                     setData(chatStatusInfo);
-                    ToastUtil.show("成功了", true, Gravity.CENTER);
-                }
+                 }
             }
         });
         imViewModel.listenerVoLiveData.observe(this, new Observer<ListenerVo>() {
             @Override
             public void onChanged(ListenerVo listenerVo) {
                 if (listenerVo == null) {
-                    finish();
+                    //finish();
                 } else {
                     setListenerData(listenerVo);
-                    ToastUtil.show("成功了", true, Gravity.CENTER);
-                }
+                 }
             }
         });
+        EventBus.getDefault().register(this);
     }
 
 
@@ -110,20 +110,36 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         if (chatPresenter != null) {
             chatPresenter.removeC2CChatEventListener();
         }
-
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
     void checkChatinfo() {
-
+        imViewModel.getChatStatusInfo();
     }
 
     void setData(ChatStatusInfo chatStatusInfo) {
-        ImageView imageView = findViewById(R.id.iv_head);
-        TextView tvNumer = findViewById(R.id.tv_numer);
-        TextView tvScore = findViewById(R.id.tv_score);
-        TextView tvHours = findViewById(R.id.tv_hours);
 
+        TextView tvNick=findViewById(R.id.tv_title);
+        TextView tvStatus=findViewById(R.id.tv_status);
+        tvNick.setText(chatStatusInfo.remoteNick);
+        findViewById(R.id.tv_jubao).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARouter.getInstance().build(ArouterPath.route_jubao).withLong("targetUid",
+                        chatStatusInfo.remoteUid).withInt("type",1).navigation();
+
+             }
+        });
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+
+            }
+        });
+        tvStatus.setText(chatStatusInfo.remoteUserOnlineStatusTitle);
+        tvStatus.setBackground(getStatusBg(chatStatusInfo.remoteUserOnlineStatus));
         chatFragment.chatView.getInputLayout().setLeftFreeMsgcount(chatStatusInfo.leftFeeMsgcount);
         chatFragment.chatView.getInputLayout().setInSameOrder(chatStatusInfo.isInSameOrder);
 //        TextView tvNumer=findViewById(R.id.tv_numer);
@@ -134,10 +150,22 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
             EventBus.getDefault().post(new OrderCountDStartEvent(chatStatusInfo.order.id));
             //TODO 通知，开始倒计时
         }
+        if(!chatStatusInfo.isRemoteListener){
+            chatFragment.getView().findViewById(R.id.lv_order).setVisibility(View.GONE);
+            if(chatStatusInfo.remoteUid==436){
+                chatFragment.getView().findViewById(R.id.lv_tocall).setVisibility(View.GONE);
+
+            }
+            chatFragment.getView().findViewById(R.id.lv_listenerinfo).setVisibility(View.GONE);
+        }
         chatFragment.getView().findViewById(R.id.lv_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String url= chatFragment.getChatInfo().getFaceUrl();
 
+
+                ARouter.getInstance().build(ArouterPath.route_listener_placeorder).withString("nick",chatStatusInfo.remoteNick).withLong("targetUid",chatStatusInfo.remoteUid).withString("avatar",url)
+                        .withString("jiyu","").navigation();
             }
         });
         chatFragment.getView().findViewById(R.id.lv_tocall).setOnClickListener(new View.OnClickListener() {
@@ -186,17 +214,14 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
+
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OrderEvent orderEvent) {
@@ -222,6 +247,18 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
          if(provider!=null){
 
          }
+    }
+
+    public Drawable getStatusBg(int status){
+        if(status==6){
+            return getResources().getDrawable(R.drawable.bg_status_serviceing);
+        }
+       else if(status==3){
+            return getResources().getDrawable(R.drawable.bg_status_resting);
+        }
+        else  {
+            return getResources().getDrawable(R.drawable.bg_status_online);
+        }
     }
 
 }

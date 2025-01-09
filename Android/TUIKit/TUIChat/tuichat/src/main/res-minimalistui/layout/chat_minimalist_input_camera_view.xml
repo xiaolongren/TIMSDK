@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <VideoView
-            android:id="@+id/video_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <VideoView-->
+<!--            android:id="@+id/video_preview"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
         <ImageView
             android:id="@+id/image_photo"
@@ -39,16 +39,16 @@
     </LinearLayout>
 
 
-    <com.tencent.qcloud.tuikit.tuichat.minimalistui.component.camera.view.CaptureLayout
-        android:id="@+id/capture_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+<!--    <com.tencent.qcloud.tuikit.tuichat.minimalistui.component.camera.view.CaptureLayout-->
+<!--        android:id="@+id/capture_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom" />-->
 
-    <com.tencent.qcloud.tuikit.tuichat.minimalistui.component.camera.view.FoucsView
-        android:id="@+id/focus_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+<!--    <com.tencent.qcloud.tuikit.tuichat.minimalistui.component.camera.view.FoucsView-->
+<!--        android:id="@+id/focus_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:visibility="invisible" />-->
 </FrameLayout>

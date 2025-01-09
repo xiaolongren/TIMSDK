@@ -17,6 +17,16 @@ public class TextMessageBean extends TUIMessageBean {
     public void onProcessMessage(V2TIMMessage v2TIMMessage) {
         if (v2TIMMessage.getTextElem() != null) {
             text = v2TIMMessage.getTextElem().getText();
+        }else{
+            if(v2TIMMessage.getSender().equals("huanxin331")){
+                text="系统提醒";
+            }
+            if(v2TIMMessage.getSender().equals("huanxin330")){
+                text="订单提醒";
+            }
+            if(v2TIMMessage.getSender().equals("huanxin332")){
+                text="互动提醒";
+            }
         }
         setExtra(text);
     }

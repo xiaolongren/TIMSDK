@@ -20,6 +20,23 @@
         <item name="android:maxHeight">25dp</item>
     </style>
 
+    <style name="CustomRatingBar" parent="@style/Widget.AppCompat.RatingBar">
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">0.5</item>
+        <item name="android:minWidth">24dp</item>
+        <item name="android:minHeight">24dp</item>
+
+        <item name="android:maxWidth">24dp</item>
+        <item name="android:maxHeight">24dp</item>
+
+        <item name="android:rating">3.5</item>
+        <item name="android:isIndicator">false</item>
+        <item name="android:spacing">12dp</item>
+
+
+
+    </style>
+
     <style name="GroupPinnedListAnimation">
         <item name="android:windowEnterAnimation">@anim/pull_list_pop_in_anim</item>
         <item name="android:windowExitAnimation">@anim/pull_list_pop_out_anim</item>

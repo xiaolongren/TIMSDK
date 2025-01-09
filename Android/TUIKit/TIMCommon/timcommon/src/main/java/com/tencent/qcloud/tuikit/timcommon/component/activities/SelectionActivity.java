@@ -194,7 +194,15 @@ public class SelectionActivity extends BaseLightActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onClick(position);
+
+                  //  onItemClickListener.onClick(position);
+
+                    // 获取当前点击位置的适配器位置
+                    int adapterPosition = holder.getAdapterPosition();
+                    // 使用适配器的位置进行处理
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        onItemClickListener.onClick(adapterPosition);
+                    }
                 }
             });
         }

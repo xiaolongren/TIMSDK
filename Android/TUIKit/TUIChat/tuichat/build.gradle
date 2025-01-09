@@ -10,12 +10,18 @@ plugins {
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
     namespace "com.tencent.qcloud.tuikit.tuichat"
+    aaptOptions {
+        ignoreAssetsPattern '!**/values-v31/**'
+    }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         renderscriptSupportModeEnabled false
@@ -106,7 +112,7 @@ dependencies {
 
 
 
-    api 'com.xy:dufubase:1.1.6'
+    implementation 'com.xy:dufubase:1.3.0'
     api project(':timcommon')
 
  }

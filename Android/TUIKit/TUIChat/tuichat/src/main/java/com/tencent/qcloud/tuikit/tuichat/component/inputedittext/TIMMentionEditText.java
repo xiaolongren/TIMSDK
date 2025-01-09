@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TIMMentionEditText extends EditText {
+public class TIMMentionEditText extends androidx.appcompat.widget.AppCompatEditText {
     public static final String TIM_MENTION_TAG = "@";
     public static final String TIM_MENTION_TAG_FULL = "＠";
 

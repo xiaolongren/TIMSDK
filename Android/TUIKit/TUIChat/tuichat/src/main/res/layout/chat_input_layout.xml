@@ -22,6 +22,7 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:layout_marginLeft="5dp"
             android:id="@+id/voice_input_switch"
             android:layout_width="@dimen/chat_input_icon_size"
             android:layout_height="@dimen/chat_input_icon_size"
@@ -78,17 +79,18 @@
         <TextView
             android:id="@+id/send_btn"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/chat_input_icon_size"
+            android:layout_height="30dp"
             android:background="@drawable/message_send_border"
-            android:text="@string/send"
+            android:gravity="center"
+            android:maxLines="1"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:gravity="center"
+            android:text="@string/send"
             android:textColor="#fff"
             android:textSize="13sp"
+            android:layout_marginRight="8dp"
             android:visibility="gone"
-            android:maxLines="1"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
     </LinearLayout>
 

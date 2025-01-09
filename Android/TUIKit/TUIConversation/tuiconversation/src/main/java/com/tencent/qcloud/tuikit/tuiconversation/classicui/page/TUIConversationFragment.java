@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,12 @@ import android.widget.PopupWindow;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.sw.base.core.ArouterPath;
 import com.sw.base.uitil.MScreenUtil;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMConversationManager;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.interfaces.TUIExtensionEventListener;
@@ -78,6 +84,12 @@ public class TUIConversationFragment extends Fragment {
         return fragment;
     }
 
+    public void refresh(){
+      //  mConversationLayout.up(0,0);
+         presenter.loadMoreConversation();
+        // presenter.updateAdapter();
+        System.out.println("refreshrefreshrefreshrefresh");
+    }
     private void initView() {
         
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
@@ -92,11 +104,46 @@ public class TUIConversationFragment extends Fragment {
         mConversationLayout.getConversationList().setOnConversationAdapterListener(new OnConversationAdapterListener() {
             @Override
             public void onItemClick(View view, int viewType, ConversationInfo conversationInfo) {
-                
-                if (conversationInfo.isMarkFold()) {
+                long userid=Long.parseLong(conversationInfo.getConversation().getUserID().replace("huanxin",""));
+                     String SYS_MSG="c2c_huanxin331";
+                     String OrderNotifi_MSG="c2c_huanxin330";
+                     String INTERACTION_MSG="c2c_huanxin332";
+                     String DayPush_MSG="c2c_huanxin333";
+                     String viewNotifi_MSG="c2c_huanxin334";
+                 if (conversationInfo.isMarkFold()) {
                     mConversationLayout.clearUnreadStatusOfFoldItem();
                     startFoldedConversationActivity();
-                } else {
+                }
+                else  if ( conversationInfo.getConversation().getConversationID().equals(SYS_MSG) ) {
+
+
+                     V2TIMManager.getConversationManager().cleanConversationUnreadMessageCount(conversationInfo.getConversation().getConversationID(), 0, 0, null);
+                     ARouter.getInstance().build(ArouterPath.route_messagelist).withString("title","系统消息").withInt("msgType",1).navigation();
+
+                }
+                else  if ( conversationInfo.getConversation().getConversationID().equals(INTERACTION_MSG) ) {
+                     V2TIMManager.getConversationManager().cleanConversationUnreadMessageCount(conversationInfo.getConversation().getConversationID(), 0, 0, null);
+
+
+                     ARouter.getInstance().build(ArouterPath.route_messagelist).withString("title","互动消息").withInt("msgType",3).navigation();
+
+                }  else  if ( conversationInfo.getConversation().getConversationID().equals(OrderNotifi_MSG) ) {
+                     V2TIMManager.getConversationManager().cleanConversationUnreadMessageCount(conversationInfo.getConversation().getConversationID(), 0, 0, null);
+
+                     ARouter.getInstance().build(ArouterPath.route_messagelist).withString("title","订单通知").withInt("msgType",6).navigation();
+
+                }
+                else  if ( conversationInfo.getConversation().getConversationID().equals(viewNotifi_MSG) ) {
+                     V2TIMManager.getConversationManager().cleanConversationUnreadMessageCount(conversationInfo.getConversation().getConversationID(), 0, 0, null);
+
+                     ARouter.getInstance().build(ArouterPath.route_messagelist).withString("title","浏览通知").withInt("msgType",5).navigation();
+
+                }
+
+
+
+
+                else {
                     TUIConversationUtils.startChatActivity(conversationInfo);
                 }
             }

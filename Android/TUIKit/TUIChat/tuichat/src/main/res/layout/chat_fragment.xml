@@ -7,12 +7,52 @@
     android:layout_height="match_parent">
     <com.tencent.qcloud.tuikit.timcommon.component.TitleBarLayout
         android:id="@+id/chat_title_bar"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/page_title_height" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/chat_title_bar_bg"
+        android:layout_height="45dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/chat_back"
+            android:layout_width="45dp"
+            android:padding="10dp"
+            android:layout_height="45dp"/>
+        <TextView
+            android:layout_toRightOf="@id/iv_back"
+            android:textColor="@color/txt46"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/tv_title"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_status"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/tv_jubao"
+            android:text="举报"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
+        android:id="@+id/lv_listenerinfo"
         android:orientation="horizontal"
         android:background="@drawable/bg_listenerinfo_white"
         android:layout_width="match_parent"
@@ -120,46 +160,58 @@
             android:background="#FFF7F7F7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
         <LinearLayout
-            android:background="@drawable/bg_btn_callcontaner"
-            android:gravity="center"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:id="@+id/lv_tocall"
-
-            android:layout_toLeftOf="@id/lv_order"
-            android:layout_width="wrap_content"
+            android:layoutDirection="rtl"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                 android:src="@drawable/ic_audio_call"
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layoutDirection="ltr"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_btn_ordercontaner"
+                android:gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/lv_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="立即通话"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="8dp"
+                android:layout_height="wrap_content">
 
-            android:background="@drawable/bg_btn_ordercontaner"
-            android:gravity="center"
-            android:layout_marginRight="16dp"
-            android:layout_alignParentRight="true"
-            android:id="@+id/lv_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:text="立即下单"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layoutDirection="ltr"
 
-            <TextView
-                android:text="立即下单"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/white"
+                android:background="@drawable/bg_btn_callcontaner"
+                android:gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:id="@+id/lv_tocall"
+
+                android:layout_toLeftOf="@id/lv_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_audio_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="立即通话"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </LinearLayout>
+
 
     </RelativeLayout>
 

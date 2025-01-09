@@ -1,5 +1,6 @@
 package com.tencent.qcloud.tuikit.tuichat.component.camera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Camera;
 import android.media.AudioFormat;
@@ -33,7 +34,7 @@ public class CameraUtil {
      */
     public static int getRecordState() {
         int minBuffer = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        AudioRecord audioRecord =
+        @SuppressLint("MissingPermission") AudioRecord audioRecord =
             new AudioRecord(MediaRecorder.AudioSource.DEFAULT, 44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, (minBuffer * 100));
         short[] point = new short[minBuffer];
         int readSize = 0;

@@ -127,4 +127,7 @@ public class ConversationListLayout extends RecyclerView implements IConversatio
         }
         return false;
     }
+    public void refresh(){
+        presenter.updateAdapter();
+    }
 }

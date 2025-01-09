@@ -3,6 +3,8 @@ package com.tencent.qcloud.tuikit.tuiconversation;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.auto.service.AutoService;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationListener;
@@ -419,6 +421,7 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
                 syncFinished = true;
             }
 
+
             @Override
             public void onSyncServerFailed() {
                 syncFinished = false;
@@ -441,6 +444,8 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
 
             @Override
             public void onConversationChanged(List<V2TIMConversation> conversationList) {
+                Log.i("IM","onConversationChanged onConversationChanged");
+
                 ConversationEventListener conversationEventListener = getInstance().getConversationEventListener();
                 List<ConversationInfo> conversationInfoList = ConversationUtils.convertV2TIMConversationList(conversationList);
                 if (conversationEventListener != null) {
@@ -456,6 +461,7 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
 
             @Override
             public void onTotalUnreadMessageCountChanged(long totalUnreadCount) {
+                Log.i("IM","onTotalUnreadMessageCountChanged:"+totalUnreadCount);
                 ConversationEventListener conversationEventListener = getInstance().getConversationEventListener();
                 if (conversationEventListener != null) {
                     conversationEventListener.updateTotalUnreadMessageCount(totalUnreadCount);

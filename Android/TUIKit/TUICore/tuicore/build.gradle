@@ -4,12 +4,15 @@ plugins {
 
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
-    namespace "com.tencent.qcloud.tuicore"
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
+    compileSdkVersion 34
+     namespace "com.tencent.qcloud.tuicore"
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
     }

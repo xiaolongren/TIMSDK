@@ -5,16 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.gson.reflect.TypeToken;
-//import com.sw.base.core.PublicParmaters;
 //import com.sw.base.net.response.Response;
 import com.sw.base.core.ListenerVo;
-import com.sw.base.core.PublicParmaters;
 import com.sw.base.net.response.Response;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ImOrder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +32,9 @@ public class ImViewModel extends ViewModel {
     MutableLiveData<ChatStatusInfo> chatStatusInfoLiveData=new MutableLiveData<>();
     MutableLiveData<ListenerVo> listenerVoLiveData=new MutableLiveData<>();
     MutableLiveData<ImOrder> imOrderMutableLiveData=new MutableLiveData<>(null);
-    void getChatStatusInfo(){
+  public   void getChatStatusInfo(){
         String  loadChatStatusInfoPath = "https://app.xiyouqingsu.com/usergroup/im/commen/checkChatInfo";
-         Map<String, Object> paramters = PublicParmaters.getPublicParametes();
+         Map<String, Object> paramters = new HashMap<>();;
          paramters.put("remoteUid",parseUid(imId));
           RxHttp.get(loadChatStatusInfoPath)
                 .addAll(paramters)
@@ -57,7 +56,7 @@ public class ImViewModel extends ViewModel {
     }
     void getListenerInfo(){
         String  loadListenerInfoPath = "https://app.xiyouqingsu.com/usergroup/listener/getlistenerinfo";
-         Map<String, Object> paramters = PublicParmaters.getPublicParametes();
+         Map<String, Object> paramters = new HashMap<>();;
          paramters.put("targetUid",parseUid(imId));
           RxHttp.get(loadListenerInfoPath)
                 .addAll(paramters)
@@ -68,12 +67,12 @@ public class ImViewModel extends ViewModel {
                     if(response.getErrorCode()==0&&response.getData()!=null){
                         listenerVoLiveData.postValue(response.getData());
                     }else{
-                        chatStatusInfoLiveData.postValue(null);
+                        listenerVoLiveData.postValue(null);
 
                     }
                 }, throwable -> {
                     //Abnormal callback
-                    chatStatusInfoLiveData.postValue(null);
+                    listenerVoLiveData.postValue(null);
 
                 });
     }

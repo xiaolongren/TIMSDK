@@ -83,7 +83,7 @@
     <string name="locate_origin_msg_failed_tip">Unable to locate the original message.</string>
 
     <string name="forward_extra">[Chat Record]</string>
-    <string name="revoke_tips_you">You recalled a message.</string>
+    <string name="revoke_tips_you" translatable="false">You recalled a message.</string>
     <string name="revoke_tips">recalled a message.</string>
     <string name="revoke_tips_other">A message is recalled.</string>
 

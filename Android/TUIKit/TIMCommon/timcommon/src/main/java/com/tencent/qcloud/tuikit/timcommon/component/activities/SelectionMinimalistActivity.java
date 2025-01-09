@@ -194,8 +194,14 @@ public class SelectionMinimalistActivity extends BaseMinimalistLightActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onClick(position);
-                }
+
+                    int adapterPosition = holder.getAdapterPosition();
+                    // 使用适配器的位置进行处理
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        onItemClickListener.onClick(adapterPosition);
+                    }
+
+                 }
             });
         }
 

@@ -25,12 +25,12 @@ public class ChatInfo implements Serializable {
     boolean enableAudioCall = true;
     boolean enableVideoCall = true;
     boolean enableRoom = true;
-    boolean enableCustomHelloMessage = true;
+    boolean enableCustomHelloMessage = false;
     boolean enablePoll = true;
     boolean enableGroupNote = true;
     private boolean enableTakePhoto = true;
-    private boolean enableRecordVideo = true;
-    private boolean enableFile = true;
+    private boolean enableRecordVideo = false;
+    private boolean enableFile = false;
     private boolean enableAlbum = true;
     boolean needReadReceipt = true;
     private DraftInfo draft;

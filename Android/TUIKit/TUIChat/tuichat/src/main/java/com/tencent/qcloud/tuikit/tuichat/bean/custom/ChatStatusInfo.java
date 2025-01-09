@@ -1,11 +1,14 @@
 package com.tencent.qcloud.tuikit.tuichat.bean.custom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatStatusInfo {
    public long remoteUid;
     //我方uid
 
     public long   uid;
-  public  boolean  isRemoteListener;
+    public  boolean  isRemoteListener;
     //我方是否是倾听者
     public  boolean isListener;
     //我方的在线状态
@@ -26,6 +29,7 @@ public class ChatStatusInfo {
     //双方正在使用的同一个订单
     public  ImOrder order;
     public int  leftFeeMsgcount;
+    public List<Long> ignorMsgCountUsers;
 
 
 }
