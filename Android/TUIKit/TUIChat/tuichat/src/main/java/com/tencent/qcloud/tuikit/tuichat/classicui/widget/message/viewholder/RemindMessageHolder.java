@@ -42,7 +42,8 @@ public class RemindMessageHolder extends MessageBaseHolder {
         String originalText =remindMessageBean.content;
 
         // 创建 SpannableString
-        SpannableString spannableString = new SpannableString(originalText+remindMessageBean.actionContent);
+
+        SpannableString spannableString = new SpannableString(originalText+(remindMessageBean.actionContent==null?"":remindMessageBean.actionContent));
 
         if(!TextUtils.isEmpty(remindMessageBean.actionContent)){
              // 定义可点击部分的起始和结束位置

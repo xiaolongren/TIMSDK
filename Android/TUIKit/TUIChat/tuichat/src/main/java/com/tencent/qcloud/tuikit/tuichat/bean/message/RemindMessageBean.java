@@ -25,11 +25,11 @@ public class RemindMessageBean extends TUIMessageBean {
         try {
             JSONObject jsonObject=new JSONObject(json);
             content=jsonObject.optString("content");
-            actionContent=jsonObject.optString("actionContent");
+            actionContent=jsonObject.optString("actionContent","");
             actionColor=jsonObject.optString("actionColor");
             color=jsonObject.optString("color");
             bgColor=jsonObject.optString("bgColor");
-            action=jsonObject.optString("action");
+            action=jsonObject.optString("action","");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

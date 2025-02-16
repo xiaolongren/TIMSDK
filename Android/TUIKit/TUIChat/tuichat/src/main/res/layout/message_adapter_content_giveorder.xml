@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="60dp"
+    android:id="@+id/lv_giveorderlayout"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:paddingStart="7dp"
+    android:paddingEnd="7dp">
+    <LinearLayout
+        android:layout_width="160dp"
+        android:gravity="center_vertical"
+         android:layout_height="40dp">
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/msg_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50ffffff" />
+
+    <TextView
+        android:text="请在2小时内领取"
+        android:textSize="12dp"
+        android:textColor="#80ffffff"
+        android:gravity="center_vertical"
+        android:id="@+id/tv_serviceType"
+        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+

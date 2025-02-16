@@ -3,10 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/conversation_page_bg">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.tencent.qcloud.tuikit.tuiconversation.classicui.widget.ConversationLayout
-        android:id="@+id/conversation_layout"
-         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.tencent.qcloud.tuikit.tuiconversation.classicui.widget.ConversationLayout
+            android:id="@+id/conversation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/lv_notif"
+            android:background="@color/main_theme_color"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="18dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:text="为能及时接收聊天消息/语音通话，请打开通知权限 》"
+                android:id="@+id/tv_open"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
 
 </LinearLayout>

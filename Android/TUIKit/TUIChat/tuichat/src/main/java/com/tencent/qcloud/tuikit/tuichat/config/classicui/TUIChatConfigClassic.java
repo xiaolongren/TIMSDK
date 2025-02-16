@@ -103,7 +103,7 @@ public class TUIChatConfigClassic {
     private boolean enableRecall = true;
     private boolean enableTranslate = true;
     private boolean enableConvert = true;
-    private boolean enableForward = true;
+    private boolean enableForward = false;
     private boolean enableSelect = true;
     private boolean enableCopy = true;
     private boolean enableDelete = true;

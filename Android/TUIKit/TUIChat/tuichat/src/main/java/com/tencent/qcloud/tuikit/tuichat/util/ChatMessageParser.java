@@ -30,6 +30,7 @@ import com.tencent.qcloud.tuikit.tuichat.bean.message.CustomLinkMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.EmptyMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.FaceMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.FileMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.bean.message.GiveOrderMessgeBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.ImageMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.LocationMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.MergeMessageBean;
@@ -147,6 +148,11 @@ public class ChatMessageParser {
         if (remindMessageBean != null) {
             return remindMessageBean;
         }
+        GiveOrderMessgeBean giveOrderMessgeBean=getGiveOrderMessgeBean(v2TIMMessage);
+        if (giveOrderMessgeBean != null) {
+            return giveOrderMessgeBean;
+        }
+
         //********************************************************************************
         //********************************************************************************
         //********************************************************************************
@@ -609,6 +615,28 @@ public class ChatMessageParser {
             JSONObject jsonObject = new JSONObject(new String(message.getCustomElem().getData()));
             if (jsonObject.optInt("subCustomType") == CustomMessageType.CUSTOM_REMIND_MESSAGE_BUSINESS_ID) {
                 return new Gson().fromJson(jsonObject.toString(), RemindMessageBean.class);
+
+            }
+            System.out.println(jsonObject.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        if (message.getCustomElem() == null) {
+            return null;
+        }
+
+        return null;
+    }
+
+
+    public static GiveOrderMessgeBean getGiveOrderMessgeBean(V2TIMMessage message) {
+        if (message == null || message.getElemType() != V2TIMMessage.V2TIM_ELEM_TYPE_CUSTOM) {
+            return null;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(new String(message.getCustomElem().getData()));
+            if (jsonObject.optInt("subCustomType") == CustomMessageType.CUSTOM_MESSAGE_TYPE_GIVEORDER) {
+                return new Gson().fromJson(jsonObject.toString(), GiveOrderMessgeBean.class);
 
             }
             System.out.println(jsonObject.toString());

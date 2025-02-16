@@ -3,6 +3,7 @@ package com.tencent.qcloud.tuikit.timcommon.classicui.widget.message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -17,9 +18,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.sw.base.core.ArouterPath;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
@@ -315,6 +319,15 @@ public abstract class MessageContentHolder<T extends TUIMessageBean> extends Mes
             leftUserIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(!msg.isSelf()){
+                        try{
+                            long uid= Long.parseLong(msg.getUserId().replace("huanxin",""));
+                            ARouter.getInstance().build(ArouterPath.route_userpage).withLong("targetUid",uid).navigation();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
                     onItemClickListener.onUserIconClick(view, msg);
                 }
             });
@@ -425,6 +438,8 @@ public abstract class MessageContentHolder<T extends TUIMessageBean> extends Mes
                 rightUserIcon.setVisibility(View.GONE);
             }
         }
+
+
     }
 
     private void setBottomContent(TUIMessageBean msg) {

@@ -3,14 +3,18 @@ package com.tencent.qcloud.tuikit.tuiconversation.classicui.widget;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.sw.base.core.ArouterPath;
 import com.tencent.qcloud.tuicore.TUIThemeManager;
 import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.timcommon.component.UnreadCountTextView;
@@ -106,6 +110,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
 
         conversationIconView.setShowFoldedStyle(showFoldedStyle);
         conversationIconView.setConversation(conversation);
+
 
         if (conversation.isShowDisturbIcon() && !isForwardMode) {
             if (showFoldedStyle && conversation.isMarkFold()) {

@@ -1,8 +1,13 @@
 package com.tencent.qcloud.tuikit.tuiconversation.classicui.page;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,11 +18,14 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.sw.base.core.ArouterPath;
 import com.sw.base.uitil.MScreenUtil;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -76,6 +84,12 @@ public class TUIConversationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(!checkNotifycationPemission()){
+            mBaseView.findViewById(R.id.lv_notif).setVisibility(View.VISIBLE);
+        }else{
+            mBaseView.findViewById(R.id.lv_notif).setVisibility(View.GONE);
+
+        }
         TUIConversationLog.d(TAG, "TUIConversationFragment onResume");
     }
 
@@ -166,6 +180,14 @@ public class TUIConversationFragment extends Fragment {
         });
 
         restoreConversationItemBackground();
+        mBaseView.findViewById(R.id.tv_open).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                openNotificationSettings(getContext());
+            }
+        });
     }
 
     public void restoreConversationItemBackground() {
@@ -365,4 +387,52 @@ public class TUIConversationFragment extends Fragment {
             presenter = null;
         }
     }
+
+    Boolean checkNotifycationPemission() {
+        // 检查通知权限是否开启
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+ 使用权限检查
+            return XXPermissions.isGranted(getContext(), Permission.POST_NOTIFICATIONS);
+        } else {
+            // Android 12 及以下检查全局通知开关
+            NotificationManager managerNotificationManager =
+                    (NotificationManager)  getContext().getSystemService(Context.NOTIFICATION_SERVICE) ;
+            return managerNotificationManager.areNotificationsEnabled();
+        }
+
+
+    }
+
+    //
+
+    /**
+     * 跳转到通知权限设置页
+     */
+    public   void openNotificationSettings(Context context) {
+        try {
+            Intent intent = new Intent();
+
+            // 针对 Android 8.0+ 的通知渠道设置
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, context.getApplicationInfo().uid);
+            }
+            // 针对 Android 5.0+ 的应用详情页（通用兜底方案）
+            else {
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            // 异常处理（部分设备可能不支持）
+            e.printStackTrace();
+            Toast.makeText(context, "无法打开设置页面", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

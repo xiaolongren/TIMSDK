@@ -38,7 +38,7 @@ public abstract class TUIMessageBean implements Serializable {
     private String selectText;
     private boolean excludeFromHistory;
     private boolean isUseMsgReceiverAvatar = false;
-    private boolean isEnableForward = true;
+    private boolean isEnableForward = false;
     private UserBean revoker;
     private boolean hasRiskContent = false;
     private int messageSource = 0;
