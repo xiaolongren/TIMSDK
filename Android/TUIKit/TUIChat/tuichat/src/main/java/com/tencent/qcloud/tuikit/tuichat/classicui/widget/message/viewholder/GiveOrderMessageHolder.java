@@ -75,7 +75,8 @@ public class GiveOrderMessageHolder extends MessageContentHolder {
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(giveOrderMessgeBean.action!=null&&giveOrderMessgeBean.action.length()>0){
+
+                if(giveOrderMessgeBean.action!=null&&giveOrderMessgeBean.action.length()>0&!msg.isSelf()){
                     RouteHandler.handle(giveOrderMessgeBean.action);
                 }
             }

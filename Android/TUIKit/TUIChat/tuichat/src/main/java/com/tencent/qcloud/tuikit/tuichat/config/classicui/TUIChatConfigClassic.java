@@ -104,7 +104,7 @@ public class TUIChatConfigClassic {
     private boolean enableTranslate = true;
     private boolean enableConvert = true;
     private boolean enableForward = false;
-    private boolean enableSelect = true;
+    private boolean enableSelect = false;
     private boolean enableCopy = true;
     private boolean enableDelete = true;
     private boolean enableSpeakerModeSwitch = true;

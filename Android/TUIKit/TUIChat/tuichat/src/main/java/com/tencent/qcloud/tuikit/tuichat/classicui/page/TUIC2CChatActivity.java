@@ -1,5 +1,7 @@
 package com.tencent.qcloud.tuikit.tuichat.classicui.page;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,8 +16,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.google.gson.reflect.TypeToken;
 import com.sw.base.arouterprovider.CallingBottomSheetDialogProvider;
 import com.sw.base.core.ArouterPath;
 import com.sw.base.core.ListenerVo;
@@ -24,13 +28,19 @@ import com.sw.base.event.OrderCountDStartEvent;
 import com.sw.base.event.OrderEvent;
 import com.sw.base.event.ShowCallBottomDialogEvent;
 import com.sw.base.event.TxtChatEvent;
+import com.sw.base.net.response.Response;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.timcommon.util.TextUtil;
 import com.tencent.qcloud.tuikit.tuichat.R;
 import com.tencent.qcloud.tuikit.tuichat.TUIChatConstants;
 import com.tencent.qcloud.tuikit.tuichat.bean.C2CChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.ChatInfo;
+import com.tencent.qcloud.tuikit.tuichat.bean.InputMoreItem;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
+import com.tencent.qcloud.tuikit.tuichat.config.classicui.TUIChatConfigClassic;
 import com.tencent.qcloud.tuikit.tuichat.presenter.C2CChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
@@ -38,6 +48,16 @@ import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import rxhttp.wrapper.param.RxHttp;
 
 public class TUIC2CChatActivity extends TUIBaseChatActivity {
     private static final String TAG = TUIC2CChatActivity.class.getSimpleName();
@@ -45,6 +65,8 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
     private TUIC2CChatFragment chatFragment;
     ImViewModel imViewModel;
     CallingBottomSheetDialogProvider provider;
+    String noteNick;//对方为咨询师时使用
+    boolean fastcall;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +92,9 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
             }
         });
         EventBus.getDefault().register(this);
+
+
+        fastcall= getIntent().getBooleanExtra("fastcall",false);
     }
 
 
@@ -82,7 +107,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
             ToastUtil.toastShortMessage("init c2c chat failed.");
             return;
         }
-
+        getCustomNoteNick("c2c_"+chatInfo.getId());
         chatFragment = new TUIC2CChatFragment();
         chatFragment.setChatInfo((C2CChatInfo) chatInfo);
 
@@ -123,12 +148,21 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         TextView tvNick=findViewById(R.id.tv_title);
         TextView tvStatus=findViewById(R.id.tv_status);
         tvNick.setText(chatStatusInfo.remoteNick);
+        if(!chatStatusInfo.isRemoteListener){
+            tvNick.setText(noteNick);
+        }
         findViewById(R.id.tv_jubao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ARouter.getInstance().build(ArouterPath.route_jubao).withLong("targetUid",
                         chatStatusInfo.remoteUid).withInt("type",1).navigation();
 
+             }
+        });
+        findViewById(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              actionselect(chatStatusInfo);
              }
         });
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
@@ -157,6 +191,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
             }
             chatFragment.getView().findViewById(R.id.lv_listenerinfo).setVisibility(View.GONE);
+
         }
         chatFragment.getView().findViewById(R.id.lv_order).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,11 +212,25 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
                 if (provider != null) {
                    String url= chatFragment.getChatInfo().getFaceUrl();
-                    provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url);
+                    provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,false);
                 }
               //  EventBus.getDefault().post(new ShowCallBottomDialogEvent(imViewModel.chatStatusInfoLiveData.getValue().remoteUid));
             }
         });
+        if(chatStatusInfo.isListener){
+            initChatInputMoreDataSource();
+        }
+        if(fastcall){
+            fastcall=false;
+            String url= chatFragment.getChatInfo().getFaceUrl();
+            if(provider==null){
+                provider = (CallingBottomSheetDialogProvider) ARouter.getInstance()
+                        .build("/listener/bottomsheetdialogprovider")
+                        .navigation(TUIC2CChatActivity.this);
+
+            }
+            provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,true);
+        }
 
     }
 
@@ -259,6 +308,137 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         else  {
             return getResources().getDrawable(R.drawable.bg_status_online);
         }
+    }
+
+    public void initChatInputMoreDataSource(){
+        // When to call: After initializing the message list interface and before entering it.
+        TUIChatConfigClassic.setChatInputMoreDataSource(new TUIChatConfigClassic.ChatInputMoreDataSource() {
+            @Override
+            public List<InputMoreItem> inputBarShouldAddNewItemToMoreMenuOfInfo(ChatInfo chatInfo) {
+                InputMoreItem inputMoreItem = new InputMoreItem() {
+                    @Override
+                    public void onAction(String chatInfoId, int chatType) {
+                        FastMsgBottomSheetDialog.showdialog(getSupportFragmentManager(),imViewModel.imId,chatFragment.getPresenter());
+                    }
+                };
+                inputMoreItem.setName("快捷用语");
+               // inputMoreItem.setPriority(10000);
+                inputMoreItem.setIconResId(R.drawable.custom_kuaijie);
+
+
+                InputMoreItem inputMoreItem2 = new InputMoreItem() {
+                    @Override
+                    public void onAction(String chatInfoId, int chatType) {
+                        new  GiveFreeOrderDialog(imViewModel).show(getSupportFragmentManager(),"orderfrr");
+
+                    }
+                };
+                inputMoreItem2.setName("赠送免费订单");
+               // inputMoreItem2.setPriority(8000);
+                inputMoreItem2.setIconResId(R.drawable.custom_morder);
+
+
+
+
+                InputMoreItem inputMoreItem3 = new InputMoreItem() {
+                    @Override
+                    public void onAction(String chatInfoId, int chatType) {
+
+                       new  GiveFreeMsgDialog(imViewModel).show(getSupportFragmentManager(),"gress");
+                     }
+                };
+                inputMoreItem3.setName("赠送免费条数");
+                // inputMoreItem2.setPriority(8000);
+                inputMoreItem3.setIconResId(R.drawable.custom_freemsg);
+
+                return Arrays.asList(inputMoreItem, inputMoreItem2,inputMoreItem3);
+            }
+        });
+    }
+    public   void getCustomNoteNick(String conversationid){
+        V2TIMManager.getConversationManager().getConversation(conversationid, new V2TIMValueCallback<V2TIMConversation>() {
+            @Override
+            public void onSuccess(V2TIMConversation conversationInfo) {
+                noteNick=   conversationInfo.getShowName();
+                String customdata=conversationInfo.getCustomData();
+                if(TextUtils.isEmpty(customdata)){
+                     return;
+                }
+                try {
+                    JSONObject jsonObject=new JSONObject(customdata);
+                  String  cnoteNick =jsonObject.optString("noteNick");
+                    if(!TextUtils.isEmpty(cnoteNick)){
+                        noteNick=cnoteNick;
+
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+
+            }
+        });
+    }
+
+    public void actionselect(ChatStatusInfo chatStatusInfo){
+        new AlertDialog.Builder(this).setItems(new CharSequence[]{"举报","拉黑"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                if(i==0){
+                    ARouter.getInstance().build(ArouterPath.route_jubao).withLong("targetUid",
+                            chatStatusInfo.remoteUid).withInt("type",1).navigation();
+
+                }else{
+
+                    setBlack(imViewModel.imId);
+
+                }
+
+            }
+        }).setNegativeButton("关闭", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).create().show();
+    }
+
+
+    public  void setBlack(String imId){
+        //  static String setBlackUserPath =   "usergroup/operation/blackuser/setBlackUser";
+        String setBlackUserPath =   "https://app.xiyouqingsu.com/usergroup/operation/blackuser/setBlackUser";
+
+        Map<String, Object> paramters = new HashMap<>();;
+        paramters.put("blackUid",imViewModel.parseUid(imId));
+        RxHttp.get(setBlackUserPath)
+                .addAll(paramters)
+                .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+
+                    Response<Integer> response= ( Response<Integer> )res ;
+                    if(response.getErrorCode()==0&&response.getData()!=null){
+                        ToastUtil.show("已拉黑",true,Gravity.CENTER);
+                        finish();
+                        //     chatStatusInfoLiveData.postValue(response.getData());
+                    }else{
+                        // chatStatusInfoLiveData.postValue(null);
+                        ToastUtil.show("拉黑失败",true,Gravity.CENTER);
+
+                    }
+                }, throwable -> {
+                    ToastUtil.show("拉黑失败",true,Gravity.CENTER);
+
+                    //Abnormal callback
+                    // chatStatusInfoLiveData.postValue(null);
+
+                });
     }
 
 }

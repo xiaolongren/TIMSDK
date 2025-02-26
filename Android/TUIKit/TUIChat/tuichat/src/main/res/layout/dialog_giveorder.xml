@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:minHeight="300dp"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="24dp"
+            android:src="@drawable/core_close_icon"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/main_theme_color"
+            android:layout_alignParentRight="true"
+            android:id="@+id/iv_close"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="24dp"/>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+
+            android:orientation="vertical"
+            android:id="@+id/lv_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="请选择赠送免费订单"
+                android:gravity="center"
+                android:textColor="@color/txt46"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="24dp"
+                android:background="@drawable/give_item_selector"
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:text="5分钟语音通话"
+                android:paddingLeft="16dp"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_five"
+                android:layout_height="36dp"/>
+
+            <TextView
+                android:background="@drawable/give_item_selector"
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:text="10分钟语音通话"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_10"
+                android:layout_height="36dp"/>
+
+
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:text="说明：每日可赠送2次"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:text="发送"
+                android:layout_marginBottom="8dp"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:id="@+id/btn_send"
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

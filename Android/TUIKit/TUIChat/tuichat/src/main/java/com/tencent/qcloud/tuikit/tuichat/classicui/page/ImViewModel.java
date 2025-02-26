@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.reflect.TypeToken;
 //import com.sw.base.net.response.Response;
 import com.sw.base.core.ListenerVo;
+import com.sw.base.net.PublicParameter;
 import com.sw.base.net.response.Response;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ImOrder;
@@ -95,5 +96,58 @@ public class ImViewModel extends ViewModel {
         // 返回 float 类型的结果
         return bd.floatValue();
     }
+
+  public void   givefreeOrder(int seconds ){
+        String giveOrderPath = "https://app.xiyouqingsu.com/pay/order/giveOrder";
+
+      Map<String, Object> paramters = new HashMap<>();;
+      paramters.put("toUid",parseUid(imId));
+      paramters.put("duration",seconds);
+      RxHttp.get(giveOrderPath)
+              .addAll(paramters)
+              .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+              .subscribe(res -> {
+
+                  Response<Integer> response= ( Response<Integer> )res ;
+                  if(response.getErrorCode()==0&&response.getData()!=null){
+                 //     chatStatusInfoLiveData.postValue(response.getData());
+                  }else{
+                     // chatStatusInfoLiveData.postValue(null);
+
+                  }
+              }, throwable -> {
+                  //Abnormal callback
+                 // chatStatusInfoLiveData.postValue(null);
+
+              });
+  }
+
+
+    public void   givefreeMsg(int count ){
+           String sendFreeMsgCountPath =   "https://app.xiyouqingsu.com/usergroup/im/commen/giveFreeMsgCount";
+
+        Map<String, Object> paramters = new HashMap<>();;
+        paramters.put("targetUid",parseUid(imId));
+        paramters.put("count",count);
+        paramters.put("listenerUid", PublicParameter.getValue(PublicParameter.KEY_UID));
+        RxHttp.get(sendFreeMsgCountPath)
+                .addAll(paramters)
+                .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+
+                    Response<Integer> response= ( Response<Integer> )res ;
+                    if(response.getErrorCode()==0&&response.getData()!=null){
+                        //     chatStatusInfoLiveData.postValue(response.getData());
+                    }else{
+                        // chatStatusInfoLiveData.postValue(null);
+
+                    }
+                }, throwable -> {
+                    //Abnormal callback
+                    // chatStatusInfoLiveData.postValue(null);
+
+                });
+    }
+
 
 }

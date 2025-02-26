@@ -42,4 +42,16 @@ public class TUIConversationUtils {
 
 
     }
+
+    public static void startC2CChatActivity(String imId, String nick, String avatar,boolean fastcall) {
+        Bundle param = new Bundle();
+        param.putInt(TUIConstants.TUIChat.CHAT_TYPE, V2TIMConversation.V2TIM_C2C);
+        param.putString(TUIConstants.TUIChat.CHAT_ID, imId);
+        param.putString(TUIConstants.TUIChat.CHAT_NAME, nick);
+        param.putString(TUIConstants.TUIChat.FACE_URL, avatar);
+        param.putBoolean("fastcall", fastcall);
+        TUICore.startActivity(TUIConstants.TUIChat.C2C_CHAT_ACTIVITY_NAME, param);
+
+
+    }
 }

@@ -7,6 +7,7 @@ import android.util.Pair;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationListFilter;
+import com.tencent.imsdk.v2.V2TIMCustomElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMUserStatus;
 import com.tencent.qcloud.tuicore.TUIConstants;
@@ -1331,6 +1332,7 @@ public class ConversationPresenter {
                         TUIConstants.TUIChat.SERVICE_NAME, TUIConstants.TUIChat.Method.GetTUIMessageBean.METHOD_NAME, param);
                 if (messageBeanObj instanceof TUIMessageBean) {
                     TUIMessageBean messageBean = (TUIMessageBean) messageBeanObj;
+                    process(messageBean);
                     if (messageBean.needAsyncGetDisplayString()) {
                         messageBeanMap.put(conversationInfo.getConversationId(), messageBean);
                         continue;
@@ -1343,6 +1345,21 @@ public class ConversationPresenter {
         HashMap<String, Object> param = new HashMap<>();
         param.put(TUIConstants.TUIChat.Method.GetMessagesDisplayString.MESSAGE_MAP, messageBeanMap);
         TUICore.callService(TUIConstants.TUIChat.SERVICE_NAME, TUIConstants.TUIChat.Method.GetMessagesDisplayString.METHOD_NAME, param);
+    }
+
+    public void process(TUIMessageBean messageBean){
+
+       V2TIMMessage message= messageBean.getV2TIMMessage();
+       if(message!=null){
+         V2TIMCustomElem customElem= message.getCustomElem();
+         if(customElem!=null){
+            String desc= customElem.getDescription();
+            if(!TextUtils.isEmpty(desc)){
+                messageBean.setExtra(desc);
+
+            }
+         }
+       }
     }
 
     protected void onConversationLastMessageBeanChanged(String conversationID, TUIMessageBean messageBean) {

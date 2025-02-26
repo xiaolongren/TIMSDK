@@ -192,7 +192,7 @@ public class ChatMessageParser {
         }
 
         TextMessageBean unsupportBean = new TextMessageBean();
-        unsupportBean.setText(TUIChatService.getAppContext().getString(R.string.no_support_msg));
+        unsupportBean.setText(setUnsupportMesgTxt(v2TIMMessage));
         if (!TextUtils.isEmpty(businessID)) {
             TUIMessageBean bean = parseGroupCreateMessage(v2TIMMessage);
             if (bean == null) {
@@ -648,5 +648,12 @@ public class ChatMessageParser {
         }
 
         return null;
+    }
+
+    public static String setUnsupportMesgTxt(V2TIMMessage v2TIMMessage){
+        if(v2TIMMessage.getCustomElem()!=null){
+            return v2TIMMessage.getCustomElem().getDescription();
+        }
+       return TUIChatService.getAppContext().getString(R.string.no_support_msg);
     }
 }

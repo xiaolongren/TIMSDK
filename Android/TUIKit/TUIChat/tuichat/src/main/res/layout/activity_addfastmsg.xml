@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_baseactionbar"/>
+
+       <EditText
+           android:maxLines="8"
+           android:layout_margin="16dp"
+           android:layout_width="match_parent"
+           android:maxLength="100"
+           android:hint="100字以内"
+           android:id="@+id/edt_content"
+           android:padding="8dp"
+           android:gravity="top|left"
+           android:minHeight="100dp"
+           android:background="@drawable/core_edit_text_bg"
+           android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/main_theme_color"
+        android:text="添加"
+        android:id="@+id/btn_add"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"/>
+
+
+</LinearLayout>

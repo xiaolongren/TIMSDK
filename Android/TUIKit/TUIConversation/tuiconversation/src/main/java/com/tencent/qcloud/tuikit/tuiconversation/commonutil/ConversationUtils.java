@@ -14,6 +14,10 @@ import com.tencent.qcloud.tuikit.tuiconversation.R;
 import com.tencent.qcloud.tuikit.tuiconversation.TUIConversationService;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationInfo;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.DraftInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -80,7 +84,7 @@ public class ConversationUtils {
                 break;
         }
 
-        info.setTitle(conversation.getShowName());
+        info.setTitle(getCustomNick(conversation));
         List<Object> faceList = new ArrayList<>();
         boolean isGroup = type == V2TIMConversation.V2TIM_GROUP;
         if (isGroup) {
@@ -211,5 +215,23 @@ public class ConversationUtils {
 
     public static String getConversationAllGroupName() {
         return TUIConversationService.getAppContext().getResources().getString(R.string.conversation_page_all);
+    }
+    public static String getCustomNick(V2TIMConversation conversationInfo){
+     String nick=   conversationInfo.getShowName();
+        String customdata=conversationInfo.getCustomData();
+     if(TextUtils.isEmpty(customdata)){
+         return nick;
+     }
+        try {
+            JSONObject jsonObject=new JSONObject(customdata);
+            String noteNick=jsonObject.optString("noteNick");
+            if(TextUtils.isEmpty(noteNick)){
+                return nick;
+            }
+            return noteNick;
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
