@@ -8,6 +8,8 @@ import com.google.gson.reflect.TypeToken;
 //import com.sw.base.net.response.Response;
 import com.sw.base.core.ListenerVo;
 import com.sw.base.net.PublicParameter;
+import com.sw.base.net.callback.Error;
+import com.sw.base.net.callback.ReqCallback;
 import com.sw.base.net.response.Response;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ImOrder;
@@ -149,5 +151,28 @@ public class ImViewModel extends ViewModel {
                 });
     }
 
+
+    public void getPlatformFreeOrder(long listenerUid, ReqCallback<Integer> callback){
+        Map<String, Object> paramters = new HashMap<>();;
+        paramters.put("listenerUid",listenerUid);
+          String getPlatformFreeOrderPath = "https://app.xiyouqingsu.com/pay/order/getPlatformFreeOrder";
+
+        RxHttp.get(getPlatformFreeOrderPath)
+                .addAll(paramters)
+                .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+
+                    Response<Integer> response= ( Response<Integer> )res ;
+                    if(response.getErrorCode()==0&&response.getData()!=null){
+                        callback.onSuccess(response.getData());
+                    }else{
+                        callback.onError(new Error(-1,response.getErrorMsg()));
+
+                    }
+                }, throwable -> {
+                    callback.onError(new Error(-1,"领取失败"));
+
+                });
+    }
 
 }

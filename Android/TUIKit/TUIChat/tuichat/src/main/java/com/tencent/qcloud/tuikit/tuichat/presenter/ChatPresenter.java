@@ -1062,11 +1062,16 @@ public abstract class ChatPresenter {
             if (loadedMessageInfoList.get(i) == null) {
                 continue;
             }
-            if (loadedMessageInfoList.get(i).getId().equals(messageInfo.getId())) {
-                loadedMessageInfoList.set(i, messageInfo);
-                updateAdapter(dataChangeType, messageInfo);
-                return;
+            try{
+                if (loadedMessageInfoList.get(i).getId().equals(messageInfo.getId())) {
+                    loadedMessageInfoList.set(i, messageInfo);
+                    updateAdapter(dataChangeType, messageInfo);
+                    return;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
     }
 

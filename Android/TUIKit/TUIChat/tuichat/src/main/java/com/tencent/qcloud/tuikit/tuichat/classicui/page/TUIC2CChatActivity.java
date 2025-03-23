@@ -16,26 +16,25 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.gson.reflect.TypeToken;
 import com.sw.base.arouterprovider.CallingBottomSheetDialogProvider;
 import com.sw.base.core.ArouterPath;
 import com.sw.base.core.ListenerVo;
+import com.sw.base.entity.UserManager;
 import com.sw.base.event.CloseBottomSheetDialogEvent;
 import com.sw.base.event.OrderCountDStartEvent;
 import com.sw.base.event.OrderEvent;
-import com.sw.base.event.ShowCallBottomDialogEvent;
 import com.sw.base.event.TxtChatEvent;
+import com.sw.base.net.callback.Error;
+import com.sw.base.net.callback.ReqCallback;
 import com.sw.base.net.response.Response;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
-import com.tencent.qcloud.tuikit.timcommon.util.TextUtil;
 import com.tencent.qcloud.tuikit.tuichat.R;
-import com.tencent.qcloud.tuikit.tuichat.TUIChatConstants;
 import com.tencent.qcloud.tuikit.tuichat.bean.C2CChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.ChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.InputMoreItem;
@@ -43,7 +42,6 @@ import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
 import com.tencent.qcloud.tuikit.tuichat.config.classicui.TUIChatConfigClassic;
 import com.tencent.qcloud.tuikit.tuichat.presenter.C2CChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
-import com.tencent.qcloud.tuikit.tuichat.util.TUIChatUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -217,6 +215,13 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
               //  EventBus.getDefault().post(new ShowCallBottomDialogEvent(imViewModel.chatStatusInfoLiveData.getValue().remoteUid));
             }
         });
+        chatFragment.getView().findViewById(R.id.lv_freeorder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //领取10分钟免费通话
+                showGetFreeOrderNotif();
+            }
+        });
         if(chatStatusInfo.isListener){
             initChatInputMoreDataSource();
         }
@@ -246,11 +251,11 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         tvScore.setText(imViewModel.truncateToOneDecimalPlace(listenerVo.commentScore) + "");
         tvHours.setText("" + imViewModel.truncateToOneDecimalPlace((listenerVo.serviceSeconds / 3600.0) + listenerVo.thirdHours));
         tvShenfen.setText(listenerVo.certificateName);
-        tvCommentNum.setText("评价(" + listenerVo.commentNums + ")");
+        tvCommentNum.setText("好评数(" + listenerVo.commentNums + ")");
         tvCommentNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ARouter.getInstance().build(ArouterPath.route_listener_listenerComment).withLong("targetUid", listenerVo.uid).navigation();
+                ARouter.getInstance().build(ArouterPath.route_listener_listenerComment).withLong("targetUid", listenerVo.uid).withInt("count",listenerVo.commentNums).navigation();
 
             }
         });
@@ -261,6 +266,10 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
             }
         });
+        if(UserManager.getInstance().user.hasGetFreeOrder==0&&listenerVo.newUserFree==1){
+            chatFragment.getView().findViewById(R.id.lv_freeorder).setVisibility(View.VISIBLE);
+
+        }
     }
 
 
@@ -300,13 +309,13 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
     public Drawable getStatusBg(int status){
         if(status==6){
-            return getResources().getDrawable(R.drawable.bg_status_serviceing);
+            return getResources().getDrawable(R.drawable.bg_imstatus_serviceing);
         }
        else if(status==3){
-            return getResources().getDrawable(R.drawable.bg_status_resting);
+            return getResources().getDrawable(R.drawable.bg_imstatus_resting);
         }
         else  {
-            return getResources().getDrawable(R.drawable.bg_status_online);
+            return getResources().getDrawable(R.drawable.bg_imstatus_online);
         }
     }
 
@@ -439,6 +448,41 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                     // chatStatusInfoLiveData.postValue(null);
 
                 });
+    }
+   public void  showGetFreeOrderNotif(){
+        new AlertDialog.Builder(this).setTitle("温馨提示").setMessage("1、新用户首单免费只有一次机会，重新注册账号不会再次获得免费机会。\n 2、建议与咨询师取得联系后再领取免费订单，以免浪费机会。").setPositiveButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setNegativeButton("领取免费订单", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+
+                if(UserManager.getInstance().user.isListener==1){
+                    ToastUtil.show("咨询师不能领取",true,Gravity.CENTER);
+
+                    return;
+                }
+                imViewModel.getPlatformFreeOrder(Long.parseLong(imViewModel.parseUid(imViewModel.imId)), new ReqCallback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        UserManager.getInstance().user.hasGetFreeOrder=1;
+                        ToastUtil.show("已领取",true,Gravity.CENTER);
+                        if(!TUIC2CChatActivity.this.isFinishing()){
+                            chatFragment.getView().findViewById(R.id.lv_freeorder).setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        ToastUtil.show(error.getMsg(),true,Gravity.CENTER);
+
+                    }
+                });
+            }
+        }).create().show();
     }
 
 }
