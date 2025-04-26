@@ -66,6 +66,6 @@ dependencies {
     api 'com.github.getActivity:XXPermissions:20.0'
 
     api project(':timcommon')
-    implementation 'com.xy:dufubase:1.5.6'
+    implementation 'com.xy:dufubase:1.6.4'
 
 }

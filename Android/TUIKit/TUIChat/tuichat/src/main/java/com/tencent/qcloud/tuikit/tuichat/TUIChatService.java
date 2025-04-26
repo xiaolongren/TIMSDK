@@ -544,6 +544,23 @@ public class TUIChatService implements TUIInitializer, ITUIService, ITUINotifica
             }
 
             @Override
+            public void onRecvC2CReadReceipt(List<V2TIMMessageReceipt> receiptList) {
+                List<C2CChatEventListener> c2CChatEventListenerList = getInstance().getC2CChatEventListenerList();
+
+                List<MessageReceiptInfo> messageReceiptInfos = new ArrayList<>();
+                for (V2TIMMessageReceipt messageReceipt : receiptList) {
+                    MessageReceiptInfo messageReceiptInfo = new MessageReceiptInfo();
+                    messageReceiptInfo.setMessageReceipt(messageReceipt);
+                    messageReceiptInfos.add(messageReceiptInfo);
+                }
+                for (C2CChatEventListener c2CChatEventListener : c2CChatEventListenerList) {
+                    c2CChatEventListener.onReadReport(messageReceiptInfos);
+                }
+                super.onRecvC2CReadReceipt(receiptList);
+
+            }
+
+            @Override
             public void onGroupMessagePinned(String groupID, V2TIMMessage v2TIMMessage, boolean isPinned, V2TIMGroupMemberInfo opUser) {
                 UserBean userBean = new UserBean();
                 userBean.setUserId(opUser.getUserID());

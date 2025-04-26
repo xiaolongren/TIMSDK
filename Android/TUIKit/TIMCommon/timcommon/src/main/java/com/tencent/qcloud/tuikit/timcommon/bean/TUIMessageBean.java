@@ -137,12 +137,7 @@ public abstract class TUIMessageBean implements Serializable {
         messageRepliesBean = MessageParser.parseMessageReplies(this);
     }
 
-    public boolean isPeerRead() {
-        if (messageReceiptInfo != null) {
-            return messageReceiptInfo.isPeerRead();
-        }
-        return false;
-    }
+
 
     public boolean hasRiskContent() {
         return hasRiskContent;
@@ -455,4 +450,18 @@ public abstract class TUIMessageBean implements Serializable {
     public Class<? extends TUIReplyQuoteBean> getReplyQuoteBeanClass() {
         return null;
     }
+
+    private boolean peerRead;
+
+    public boolean isPeerRead() {
+        if (v2TIMMessage.isPeerRead()){
+            return true;
+        }
+        return peerRead;
+    }
+
+    public void setPeerRead(boolean peerRead) {
+        this.peerRead = peerRead;
+    }
+
 }

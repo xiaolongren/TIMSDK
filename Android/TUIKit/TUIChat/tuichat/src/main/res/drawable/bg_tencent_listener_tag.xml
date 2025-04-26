@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:type="linear"
+        android:angle="0"
+    android:startColor="#DCF0FA"
+    android:endColor="#C8ECFD"
+    android:centerColor="#D1EEFB"
+    />
+    <padding android:left="4dp" android:right="4dp" android:bottom="3dp" android:top="3dp"/>
+    <!-- 可选圆角 -->
+    <corners android:radius="2dp" />
+</shape>

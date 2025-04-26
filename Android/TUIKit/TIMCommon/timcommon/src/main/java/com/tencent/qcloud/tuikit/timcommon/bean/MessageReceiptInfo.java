@@ -17,6 +17,12 @@ public class MessageReceiptInfo implements Serializable {
         }
         return null;
     }
+    public long getTimestamp() {
+        if (messageReceipt != null) {
+            return messageReceipt.getTimestamp();
+        }
+        return 0;
+    }
 
     public boolean isPeerRead() {
         if (messageReceipt != null) {

@@ -72,9 +72,9 @@
             android:ellipsize="end"
             android:gravity="top|start"
             android:singleLine="true"
-            android:textColor="@color/black_font_color"
+            android:textColor="@color/txt46"
             android:lineHeight="23.04sp"
-            android:textSize="17.28sp" />
+            android:textSize="16.28sp" />
 
         <TextView
             android:id="@+id/conversation_time"

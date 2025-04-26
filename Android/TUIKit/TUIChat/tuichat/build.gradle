@@ -112,7 +112,7 @@ dependencies {
 
 
 
-    implementation 'com.xy:dufubase:1.5.6'
+    implementation 'com.xy:dufubase:1.6.4'
     api project(':timcommon')
 
  }

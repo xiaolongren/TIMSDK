@@ -45,6 +45,7 @@ import com.tencent.qcloud.tuikit.tuichat.bean.message.ReplyMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.SoundMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.TextMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.bean.message.VideoMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.classicui.widget.message.MessageRecyclerView;
 import com.tencent.qcloud.tuikit.tuichat.component.progress.ProgressPresenter;
 import com.tencent.qcloud.tuikit.tuichat.config.GeneralConfig;
 import com.tencent.qcloud.tuikit.tuichat.config.TUIChatConfigs;
@@ -804,15 +805,28 @@ public abstract class ChatPresenter {
     }
 
     public void onMessageReadReceiptUpdated(List<TUIMessageBean> messageBeanList, List<MessageReceiptInfo> data) {
+//        for (MessageReceiptInfo receiptInfo : data) {
+//            for (int i = 0; i < messageBeanList.size(); i++) {
+//                TUIMessageBean messageBean = loadedMessageInfoList.get(i);
+//                if (TextUtils.equals(messageBean.getId(), receiptInfo.getMsgID())) {
+//                    messageBean.setMessageReceiptInfo(receiptInfo);
+//                    updateAdapter(IMessageRecyclerView.DATA_CHANGE_TYPE_UPDATE, i);
+//                }
+//            }
+//        }
+
+
         for (MessageReceiptInfo receiptInfo : data) {
             for (int i = 0; i < messageBeanList.size(); i++) {
                 TUIMessageBean messageBean = loadedMessageInfoList.get(i);
-                if (TextUtils.equals(messageBean.getId(), receiptInfo.getMsgID())) {
+                if (messageBean.getV2TIMMessage().getTimestamp() <= receiptInfo.getTimestamp()) {
+                    messageBean.setPeerRead(true);
                     messageBean.setMessageReceiptInfo(receiptInfo);
-                    updateAdapter(IMessageRecyclerView.DATA_CHANGE_TYPE_UPDATE, i);
+                    updateAdapter(MessageRecyclerView.DATA_CHANGE_TYPE_UPDATE, i);
                 }
             }
         }
+
     }
 
     public void sendPhotoVideoMessages(Uri originalUri, Uri transcodeUri) {

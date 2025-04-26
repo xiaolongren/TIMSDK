@@ -185,17 +185,27 @@ public abstract class MessageContentHolder<T extends TUIMessageBean> extends Mes
             isReadText.setVisibility(View.GONE);
             unreadAudioText.setVisibility(View.GONE);
         } else {
-            if (isShowRead) {
-                if (msg.isSelf() && TUIMessageBean.MSG_STATUS_SEND_SUCCESS == msg.getStatus()) {
-                    if (!msg.isNeedReadReceipt()) {
-                        isReadText.setVisibility(View.GONE);
-                    } else {
-                        showReadText(msg);
-                    }
-                } else {
+//            if (isShowRead) {
+//                if (msg.isSelf() && TUIMessageBean.MSG_STATUS_SEND_SUCCESS == msg.getStatus()) {
+//                    if (!msg.isNeedReadReceipt()) {
+//                        isReadText.setVisibility(View.GONE);
+//                    } else {
+//                        showReadText(msg);
+//                    }
+//                } else {
+//                    isReadText.setVisibility(View.GONE);
+//                }
+//            }
+            if (msg.isSelf() && TUIMessageBean.MSG_STATUS_SEND_SUCCESS == msg.getStatus()) {
+                if (msg.isGroup()) {
                     isReadText.setVisibility(View.GONE);
+                } else {
+                    showReadText(msg);
                 }
+            } else {
+                isReadText.setVisibility(View.GONE);
             }
+
             unreadAudioText.setVisibility(View.GONE);
         }
     }

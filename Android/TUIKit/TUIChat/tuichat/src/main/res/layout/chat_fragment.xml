@@ -144,10 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:background="@drawable/bg_listenershenfen_green"
+                    android:background="@drawable/bg_tencent_listener_tag"
                     android:id="@+id/tv_shenfen"
                     tools:text="咨询师"
-                    android:textColor="#00AE66"
+                    android:textColor="#454547"
                     android:layout_marginLeft="24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

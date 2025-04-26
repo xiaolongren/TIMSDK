@@ -40,9 +40,11 @@ import com.tencent.qcloud.tuikit.timcommon.component.action.PopActionClickListen
 import com.tencent.qcloud.tuikit.timcommon.component.action.PopDialogAdapter;
 import com.tencent.qcloud.tuikit.timcommon.component.action.PopMenuAction;
 import com.tencent.qcloud.tuikit.timcommon.component.dialog.TUIKitDialog;
+import com.tencent.qcloud.tuikit.timcommon.component.interfaces.IUIKitCallback;
 import com.tencent.qcloud.tuikit.timcommon.util.LayoutUtil;
 import com.tencent.qcloud.tuikit.tuiconversation.R;
 import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationInfo;
+import com.tencent.qcloud.tuikit.tuiconversation.bean.ConversationPopMenuItem;
 import com.tencent.qcloud.tuikit.tuiconversation.classicui.interfaces.OnConversationAdapterListener;
 import com.tencent.qcloud.tuikit.tuiconversation.classicui.util.TUIConversationUtils;
 import com.tencent.qcloud.tuikit.tuiconversation.classicui.widget.ConversationLayout;
@@ -118,8 +120,7 @@ public class TUIConversationFragment extends Fragment {
         mConversationLayout.getConversationList().setOnConversationAdapterListener(new OnConversationAdapterListener() {
             @Override
             public void onItemClick(View view, int viewType, ConversationInfo conversationInfo) {
-                long userid=Long.parseLong(conversationInfo.getConversation().getUserID().replace("huanxin",""));
-                     String SYS_MSG="c2c_huanxin331";
+                      String SYS_MSG="c2c_huanxin331";
                      String OrderNotifi_MSG="c2c_huanxin330";
                      String INTERACTION_MSG="c2c_huanxin332";
                      String DayPush_MSG="c2c_huanxin333";
@@ -215,6 +216,34 @@ public class TUIConversationFragment extends Fragment {
         return markUnreadAction;
     }
 
+    private PopMenuAction getSetChatTopMenuAction( ConversationInfo conversationInfo){
+        PopMenuAction action = new PopMenuAction();
+        if (conversationInfo.isTop()) {
+            action.setActionName(getString(R.string.quit_chat_top));
+        } else {
+            action.setActionName(getString(R.string.chat_top));
+
+        }
+        action.setActionClickListener(new PopActionClickListener() {
+            @Override
+            public void onActionClick(int index, Object data) {
+                mConversationLayout.setConversationTop(conversationInfo, new IUIKitCallback() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        super.onSuccess(data);
+
+                    }
+
+                    @Override
+                    public void onError(String module, int errCode, String errMsg) {
+                        super.onError(module, errCode, errMsg);
+                    }
+                });
+            }
+        });
+
+         return  action;
+    }
     private PopMenuAction getDeletePopMenuAction() {
         PopMenuAction action = new PopMenuAction();
         action.setActionClickListener(new PopActionClickListener() {
@@ -279,9 +308,12 @@ public class TUIConversationFragment extends Fragment {
                 }
             }
 
+
+
             deleteAction = getDeletePopMenuAction();
             mConversationPopActions.add(markUnreadAction);
             mConversationPopActions.add(deleteAction);
+            mConversationPopActions.add(getSetChatTopMenuAction(conversationInfo));
             mConversationPopActions.addAll(addMoreConversationAction(conversationInfo));
         }
 

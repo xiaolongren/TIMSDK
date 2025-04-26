@@ -27,6 +27,7 @@ import com.sw.base.event.CloseBottomSheetDialogEvent;
 import com.sw.base.event.OrderCountDStartEvent;
 import com.sw.base.event.OrderEvent;
 import com.sw.base.event.TxtChatEvent;
+import com.sw.base.net.PublicParameter;
 import com.sw.base.net.callback.Error;
 import com.sw.base.net.callback.ReqCallback;
 import com.sw.base.net.response.Response;
@@ -396,7 +397,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
     }
 
     public void actionselect(ChatStatusInfo chatStatusInfo){
-        new AlertDialog.Builder(this).setItems(new CharSequence[]{"举报","拉黑"}, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setItems(new CharSequence[]{"举报","拉黑","关注"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -404,10 +405,14 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                     ARouter.getInstance().build(ArouterPath.route_jubao).withLong("targetUid",
                             chatStatusInfo.remoteUid).withInt("type",1).navigation();
 
-                }else{
+                }
+               else if(i==1){
 
                     setBlack(imViewModel.imId);
 
+                }
+               else{
+                    follow(imViewModel.imId);
                 }
 
             }
@@ -419,6 +424,41 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         }).create().show();
     }
 
+
+    public  void follow(String imId){
+
+        //   param.set('fromUid',HttpRequest.getInstance().uid.toString());
+        //    param.set('followId',targetUid);
+        //    param.set('type',"1");
+        //  static String setBlackUserPath =   "usergroup/operation/blackuser/setBlackUser";
+        String followPath =   "https://app.xiyouqingsu.com/content/interaction/follow/follow";
+
+        Map<String, Object> paramters = new HashMap<>();;
+        paramters.put("fromUid", PublicParameter.getValue(PublicParameter.KEY_UID));
+        paramters.put("followId",imViewModel.parseUid(imId));
+        paramters.put("type","1");
+        RxHttp.get(followPath)
+                .addAll(paramters)
+                .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+
+                    Response<Integer> response= ( Response<Integer> )res ;
+                    if(response.getErrorCode()==0&&response.getData()!=null){
+                        ToastUtil.show("已关注",true,Gravity.CENTER);
+                         //     chatStatusInfoLiveData.postValue(response.getData());
+                    }else{
+                        // chatStatusInfoLiveData.postValue(null);
+                        ToastUtil.show("关注失败",true,Gravity.CENTER);
+
+                    }
+                }, throwable -> {
+                    ToastUtil.show("关注失败",true,Gravity.CENTER);
+
+                    //Abnormal callback
+                    // chatStatusInfoLiveData.postValue(null);
+
+                });
+    }
 
     public  void setBlack(String imId){
         //  static String setBlackUserPath =   "usergroup/operation/blackuser/setBlackUser";
