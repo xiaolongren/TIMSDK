@@ -217,6 +217,32 @@
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layoutDirection="ltr"
+
+                android:background="@drawable/bg_btn_ordercontaner"
+                android:gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:visibility="gone"
+                android:id="@+id/lv_customer"
+
+                android:layout_toLeftOf="@id/lv_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="客户设置"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
                 android:layoutDirection="ltr"
@@ -243,6 +269,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
 
 
     </RelativeLayout>

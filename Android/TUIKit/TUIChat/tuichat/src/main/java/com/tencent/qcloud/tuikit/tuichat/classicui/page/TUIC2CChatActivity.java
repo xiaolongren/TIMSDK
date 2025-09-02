@@ -171,6 +171,12 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
             }
         });
+        findViewById(R.id.lv_customer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARouter.getInstance().build(ArouterPath.route_customDetail).withString("targetUidStr",chatStatusInfo.remoteUid+"").navigation();
+            }
+        });
         tvStatus.setText(chatStatusInfo.remoteUserOnlineStatusTitle);
         tvStatus.setBackground(getStatusBg(chatStatusInfo.remoteUserOnlineStatus));
         chatFragment.chatView.getInputLayout().setLeftFreeMsgcount(chatStatusInfo.leftFeeMsgcount);
@@ -184,12 +190,18 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
             //TODO 通知，开始倒计时
         }
         if(!chatStatusInfo.isRemoteListener){
+            if(chatStatusInfo.isListener){
+                chatFragment.getView().findViewById(R.id.lv_customer).setVisibility(View.VISIBLE);
+            }
             chatFragment.getView().findViewById(R.id.lv_order).setVisibility(View.GONE);
             if(chatStatusInfo.remoteUid==436){
                 chatFragment.getView().findViewById(R.id.lv_tocall).setVisibility(View.GONE);
 
             }
             chatFragment.getView().findViewById(R.id.lv_listenerinfo).setVisibility(View.GONE);
+
+        }else {
+            chatFragment.getView().findViewById(R.id.lv_customer).setVisibility(View.GONE);
 
         }
         chatFragment.getView().findViewById(R.id.lv_order).setOnClickListener(new View.OnClickListener() {
@@ -211,7 +223,8 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
                 if (provider != null) {
                    String url= chatFragment.getChatInfo().getFaceUrl();
-                    provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,false);
+                    int listenerBindCallPhone=  imViewModel.listenerVoLiveData.getValue()==null?0:imViewModel.listenerVoLiveData.getValue().hasbindCallPhone;
+                    provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,false, listenerBindCallPhone);
                 }
               //  EventBus.getDefault().post(new ShowCallBottomDialogEvent(imViewModel.chatStatusInfoLiveData.getValue().remoteUid));
             }
@@ -235,7 +248,9 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                         .navigation(TUIC2CChatActivity.this);
 
             }
-            provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,true);
+            int listenerBindCallPhone=  imViewModel.listenerVoLiveData.getValue()==null?0:imViewModel.listenerVoLiveData.getValue().hasbindCallPhone;
+
+            provider.showBottomSheetDialog(TUIC2CChatActivity.this,imViewModel.chatStatusInfoLiveData.getValue().remoteUid,imViewModel.chatStatusInfoLiveData.getValue().remoteNick,url,true,listenerBindCallPhone);
         }
 
     }
