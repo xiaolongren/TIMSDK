@@ -1,16 +1,21 @@
 package com.tencent.qcloud.tuikit.tuichat.classicui.page;
 
+import static com.blankj.utilcode.util.BarUtils.getStatusBarHeight;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -94,6 +99,24 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
 
         fastcall= getIntent().getBooleanExtra("fastcall",false);
+
+        setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg));
+    }
+    // 完整示例（兼容API 19+）
+    protected void setCustomStatusBar(@ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(color);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 添加模拟状态栏视图
+            View statusView = new View(this);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    getStatusBarHeight()
+            );
+            statusView.setLayoutParams(params);
+            statusView.setBackgroundColor(color);
+            ((ViewGroup) getWindow().getDecorView()).addView(statusView);
+        }
     }
 
 

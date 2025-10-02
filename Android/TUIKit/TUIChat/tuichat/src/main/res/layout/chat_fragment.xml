@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+     android:clipToPadding="false"
     android:background="#FFF7F7F7"
     android:layout_height="match_parent">
     <com.tencent.qcloud.tuikit.timcommon.component.TitleBarLayout
