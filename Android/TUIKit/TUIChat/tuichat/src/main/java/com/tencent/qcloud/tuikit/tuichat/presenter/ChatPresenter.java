@@ -1456,7 +1456,8 @@ public abstract class ChatPresenter {
         offlinePushInfo.setDescription(offlineTitle);
 
         // OPPO must set a ChannelID to receive push messages. This channelID needs to be the same as the console.
-        offlinePushInfo.setAndroidOPPOChannelID("tuikit");
+        offlinePushInfo.setAndroidOPPOChannelID("IM");
+
         if (TUIChatConfigs.getConfigs().getGeneralConfig().isEnableAndroidPrivateRing()) {
             offlinePushInfo.setAndroidSound(OfflinePushInfoUtils.PRIVATE_RING_NAME);
         }

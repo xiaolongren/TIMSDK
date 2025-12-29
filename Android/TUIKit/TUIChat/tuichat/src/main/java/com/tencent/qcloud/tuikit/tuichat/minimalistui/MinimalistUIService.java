@@ -122,7 +122,7 @@ public class MinimalistUIService implements TUIInitializer, ITUIService, ITUIExt
 
     private void initExtension() {
         TUICore.registerExtension(TUIConstants.TUIContact.Extension.FriendProfileItem.MINIMALIST_EXTENSION_ID, this);
-        TUICore.registerExtension(TUIConstants.TUIGroup.Extension.GroupProfileItem.MINIMALIST_EXTENSION_ID, this);
+//        TUICore.registerExtension(TUIConstants.TUIGroup.Extension.GroupProfileItem.MINIMALIST_EXTENSION_ID, this);
     }
 
     public void initMessage() {
@@ -210,9 +210,10 @@ public class MinimalistUIService implements TUIInitializer, ITUIService, ITUIExt
     public List<TUIExtensionInfo> onGetExtension(String extensionID, Map<String, Object> param) {
         if (TextUtils.equals(extensionID, TUIConstants.TUIContact.Extension.FriendProfileItem.MINIMALIST_EXTENSION_ID)) {
             return getMinimalistFriendProfileExtension(param);
-        } else if (TextUtils.equals(extensionID, TUIConstants.TUIGroup.Extension.GroupProfileItem.MINIMALIST_EXTENSION_ID)) {
-            return getMinimalistGroupProfileExtension(param);
         }
+//        else if (TextUtils.equals(extensionID, TUIConstants.TUIGroup.Extension.GroupProfileItem.MINIMALIST_EXTENSION_ID)) {
+//            return getMinimalistGroupProfileExtension(param);
+//        }
         return null;
     }
 
@@ -237,26 +238,26 @@ public class MinimalistUIService implements TUIInitializer, ITUIService, ITUIExt
         return extensionInfoList;
     }
 
-    private List<TUIExtensionInfo> getMinimalistGroupProfileExtension(Map<String, Object> param) {
-        TUIExtensionInfo chatExtension = new TUIExtensionInfo();
-        chatExtension.setWeight(400);
-        chatExtension.setIcon(R.drawable.chat_contact_profile_item_extension_message_icon);
-        chatExtension.setText(getAppContext().getString(R.string.chat_contact_profile_message));
-        String groupID = getOrDefault(param, TUIConstants.TUIGroup.Extension.GroupProfileItem.GROUP_ID, null);
-        chatExtension.setExtensionListener(new TUIExtensionEventListener() {
-            @Override
-            public void onClicked(Map<String, Object> param) {
-                Intent intent = new Intent(getAppContext(), TUIGroupChatMinimalistActivity.class);
-                intent.putExtra(TUIConstants.TUIChat.CHAT_TYPE, V2TIMConversation.V2TIM_GROUP);
-                intent.putExtra(TUIConstants.TUIChat.CHAT_ID, groupID);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getAppContext().startActivity(intent);
-            }
-        });
-        List<TUIExtensionInfo> extensionInfoList = new ArrayList<>();
-        extensionInfoList.add(chatExtension);
-        return extensionInfoList;
-    }
+//    private List<TUIExtensionInfo> getMinimalistGroupProfileExtension(Map<String, Object> param) {
+//        TUIExtensionInfo chatExtension = new TUIExtensionInfo();
+//        chatExtension.setWeight(400);
+//        chatExtension.setIcon(R.drawable.chat_contact_profile_item_extension_message_icon);
+//        chatExtension.setText(getAppContext().getString(R.string.chat_contact_profile_message));
+//        String groupID = getOrDefault(param, TUIConstants.TUIGroup.Extension.GroupProfileItem.GROUP_ID, null);
+//        chatExtension.setExtensionListener(new TUIExtensionEventListener() {
+//            @Override
+//            public void onClicked(Map<String, Object> param) {
+//                Intent intent = new Intent(getAppContext(), TUIGroupChatMinimalistActivity.class);
+//                intent.putExtra(TUIConstants.TUIChat.CHAT_TYPE, V2TIMConversation.V2TIM_GROUP);
+//                intent.putExtra(TUIConstants.TUIChat.CHAT_ID, groupID);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                getAppContext().startActivity(intent);
+//            }
+//        });
+//        List<TUIExtensionInfo> extensionInfoList = new ArrayList<>();
+//        extensionInfoList.add(chatExtension);
+//        return extensionInfoList;
+//    }
 
     private <T> T getOrDefault(Map map, Object key, T defaultValue) {
         if (map == null || map.isEmpty()) {

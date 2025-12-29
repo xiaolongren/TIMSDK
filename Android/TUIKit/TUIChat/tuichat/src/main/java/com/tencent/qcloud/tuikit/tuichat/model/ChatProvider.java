@@ -364,6 +364,11 @@ public class ChatProvider {
         }
         v2TIMOfflinePushInfo.setAndroidHuaWeiCategory("IM");
         v2TIMOfflinePushInfo.setAndroidVIVOCategory("IM");
+        v2TIMOfflinePushInfo.setAndroidOPPOChannelID("IM");
+        v2TIMOfflinePushInfo.setAndroidXiaoMiChannelID("112208");
+       // v2TIMOfflinePushInfo.setAndroidOPPOCategory("IM");
+        v2TIMOfflinePushInfo.setAndroidOPPOChannelID("IM");
+        v2TIMOfflinePushInfo.setAndroidHonorImportance("NORMAL");
 
         return v2TIMOfflinePushInfo;
     }
@@ -387,7 +392,7 @@ public class ChatProvider {
         }
 
         V2TIMOfflinePushInfo v2TIMOfflinePushInfo = createOfflinePushInfo(message, chatInfo);
-
+        //v2TIMOfflinePushInfo=null;
         v2TIMMessage.setExcludedFromUnreadCount(TUIChatConfigs.getConfigs().getGeneralConfig().isExcludedFromUnreadCount());
         v2TIMMessage.setExcludedFromLastMessage(TUIChatConfigs.getConfigs().getGeneralConfig().isExcludedFromLastMessage());
 

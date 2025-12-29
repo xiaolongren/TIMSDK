@@ -75,13 +75,13 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
     }
 
     private void initEvent() {
-        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_EXIT_GROUP, this);
-        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_MEMBER_KICKED_GROUP, this);
-        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_DISMISS, this);
-        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_RECYCLE, this);
+//        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.EVENT_SUB_KEY_EXIT_GROUP, this);
+//        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_MEMBER_KICKED_GROUP, this);
+//        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_DISMISS, this);
+//        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_RECYCLE, this);
         TUICore.registerEvent(TUIConstants.TUIContact.EVENT_FRIEND_INFO_CHANGED, TUIConstants.TUIContact.EVENT_SUB_KEY_FRIEND_REMARK_CHANGED, this);
-        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_CLEAR_MESSAGE, this);
-        TUICore.registerEvent(TUIConstants.TUIContact.EVENT_USER, TUIConstants.TUIContact.EVENT_SUB_KEY_CLEAR_MESSAGE, this);
+//        TUICore.registerEvent(TUIConstants.TUIGroup.EVENT_GROUP, TUIConstants.TUIGroup.EVENT_SUB_KEY_CLEAR_MESSAGE, this);
+        TUICore.registerEvent(TUIConstants.TUIContact.EVENT_USER, TUIConstants.TUIContact.EVENT_SUB_KEY_CLEAR_C2C_MESSAGE, this);
         TUICore.registerEvent(TUIConstants.TUIChat.EVENT_KEY_RECEIVE_MESSAGE, TUIConstants.TUIChat.EVENT_SUB_KEY_CONVERSATION_ID, this);
         TUICore.registerEvent(TUIConstants.TUIConversation.EVENT_KEY_MESSAGE_SEND_FOR_CONVERSATION,
             TUIConstants.TUIConversation.EVENT_SUB_KEY_MESSAGE_SEND_FOR_CONVERSATION, this);
@@ -160,9 +160,11 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
 
     @Override
     public void onNotifyEvent(String key, String subKey, Map<String, Object> param) {
-        if (TextUtils.equals(key, TUIConstants.TUIGroup.EVENT_GROUP)) {
-            handleGroupEvent(subKey, param);
-        } else if (key.equals(TUIConstants.TUIContact.EVENT_USER)) {
+//        if (TextUtils.equals(key, TUIConstants.TUIGroup.EVENT_GROUP)) {
+//            handleGroupEvent(subKey, param);
+//        } else
+
+            if (key.equals(TUIConstants.TUIContact.EVENT_USER)) {
             handleContactUserEvent(subKey, param);
         } else if (key.equals(TUIConstants.TUIContact.EVENT_FRIEND_INFO_CHANGED)) {
             handleFriendInfoChangedEvent(subKey, param);
@@ -310,7 +312,7 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
     }
 
     private void handleContactUserEvent(String subKey, Map<String, Object> param) {
-        if (subKey.equals(TUIConstants.TUIContact.EVENT_SUB_KEY_CLEAR_MESSAGE)) {
+        if (subKey.equals(TUIConstants.TUIContact.EVENT_SUB_KEY_CLEAR_C2C_MESSAGE)) {
             if (param == null || param.isEmpty()) {
                 return;
             }
@@ -327,54 +329,54 @@ public class TUIConversationService implements TUIInitializer, ITUIService, ITUI
     }
 
     private void handleGroupEvent(String subKey, Map<String, Object> param) {
-        if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_EXIT_GROUP)
-            || TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_DISMISS)
-            || TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_RECYCLE)) {
-            ConversationEventListener eventListener = getConversationEventListener();
-            String groupId = null;
-            if (param != null) {
-                groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
-            }
-            if (eventListener != null) {
-                eventListener.deleteConversation(groupId, true);
-            }
-            List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
-            for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
-                conversationEventObserver.deleteConversation(groupId, true);
-            }
-        } else if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_MEMBER_KICKED_GROUP)) {
-            if (param == null) {
-                return;
-            }
-            String groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
-            ArrayList<String> memberList = (ArrayList<String>) param.get(TUIConstants.TUIGroup.GROUP_MEMBER_ID_LIST);
-            if (TextUtils.isEmpty(groupId) || memberList == null || memberList.isEmpty()) {
-                return;
-            }
-            for (String id : memberList) {
-                if (TextUtils.equals(id, TUILogin.getLoginUser())) {
-                    ConversationEventListener eventListener = getConversationEventListener();
-                    if (eventListener != null) {
-                        eventListener.deleteConversation(groupId, true);
-                    }
-                    List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
-                    for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
-                        conversationEventObserver.deleteConversation(groupId, true);
-                    }
-                    break;
-                }
-            }
-        } else if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_CLEAR_MESSAGE)) {
-            String groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
-            ConversationEventListener eventListener = getConversationEventListener();
-            if (eventListener != null) {
-                eventListener.clearConversationMessage(groupId, true);
-            }
-            List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
-            for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
-                conversationEventObserver.clearConversationMessage(groupId, true);
-            }
-        }
+//        if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_EXIT_GROUP)
+//            || TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_DISMISS)
+//            || TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_GROUP_RECYCLE)) {
+//            ConversationEventListener eventListener = getConversationEventListener();
+//            String groupId = null;
+//            if (param != null) {
+//                groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
+//            }
+//            if (eventListener != null) {
+//                eventListener.deleteConversation(groupId, true);
+//            }
+//            List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
+//            for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
+//                conversationEventObserver.deleteConversation(groupId, true);
+//            }
+//        } else if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_MEMBER_KICKED_GROUP)) {
+//            if (param == null) {
+//                return;
+//            }
+//            String groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
+//            ArrayList<String> memberList = (ArrayList<String>) param.get(TUIConstants.TUIGroup.GROUP_MEMBER_ID_LIST);
+//            if (TextUtils.isEmpty(groupId) || memberList == null || memberList.isEmpty()) {
+//                return;
+//            }
+//            for (String id : memberList) {
+//                if (TextUtils.equals(id, TUILogin.getLoginUser())) {
+//                    ConversationEventListener eventListener = getConversationEventListener();
+//                    if (eventListener != null) {
+//                        eventListener.deleteConversation(groupId, true);
+//                    }
+//                    List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
+//                    for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
+//                        conversationEventObserver.deleteConversation(groupId, true);
+//                    }
+//                    break;
+//                }
+//            }
+//        } else if (TextUtils.equals(subKey, TUIConstants.TUIGroup.EVENT_SUB_KEY_CLEAR_MESSAGE)) {
+//            String groupId = (String) getOrDefault(param.get(TUIConstants.TUIGroup.GROUP_ID), "");
+//            ConversationEventListener eventListener = getConversationEventListener();
+//            if (eventListener != null) {
+//                eventListener.clearConversationMessage(groupId, true);
+//            }
+//            List<ConversationEventListener> conversationEventObserverList = getConversationEventListenerList();
+//            for (ConversationEventListener conversationEventObserver : conversationEventObserverList) {
+//                conversationEventObserver.clearConversationMessage(groupId, true);
+//            }
+//        }
     }
 
     private void handleMessageBeanUpdateEvent(String subKey, Map<String, Object> param) {

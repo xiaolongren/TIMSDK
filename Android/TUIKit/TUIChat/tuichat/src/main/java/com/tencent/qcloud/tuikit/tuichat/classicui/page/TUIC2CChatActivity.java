@@ -2,8 +2,10 @@ package com.tencent.qcloud.tuikit.tuichat.classicui.page;
 
 import static com.blankj.utilcode.util.BarUtils.getStatusBarHeight;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +43,7 @@ import com.sw.base.net.response.Response;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.tencent.qcloud.tim.push.TIMPushManager;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuichat.R;
 import com.tencent.qcloud.tuikit.tuichat.bean.C2CChatInfo;
@@ -47,6 +52,7 @@ import com.tencent.qcloud.tuikit.tuichat.bean.InputMoreItem;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
 import com.tencent.qcloud.tuikit.tuichat.config.classicui.TUIChatConfigClassic;
 import com.tencent.qcloud.tuikit.tuichat.presenter.C2CChatPresenter;
+import com.tencent.qcloud.tuikit.tuichat.util.StatusBarUtil;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -74,6 +80,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE); // 禁止截屏/录屏
         imViewModel = new ViewModelProvider(this).get(ImViewModel.class);
         imViewModel.chatStatusInfoLiveData.observe(this, new Observer<ChatStatusInfo>() {
             @Override
@@ -99,8 +106,12 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
 
         fastcall= getIntent().getBooleanExtra("fastcall",false);
+        TIMPushManager.getInstance().disablePostNotificationInForeground(true);
 
-        setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg));
+        // setFullScreen(this,false);
+
+     // StatusBarUtil.setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg),this);
+ //        setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg));
     }
     // 完整示例（兼容API 19+）
     protected void setCustomStatusBar(@ColorInt int color) {
@@ -158,6 +169,8 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
             chatPresenter.removeC2CChatEventListener();
         }
         EventBus.getDefault().unregister(this);
+        TIMPushManager.getInstance().disablePostNotificationInForeground(false);
+
         super.onDestroy();
     }
 
@@ -561,6 +574,59 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                 });
             }
         }).create().show();
+    }
+
+
+
+    /**
+     * 设置全屏模式
+     * @param activity 当前Activity
+     * @param hideNavigationBar 是否隐藏导航栏（true：沉浸式，false：仅状态栏）
+     */
+    public static void setFullScreen(Activity activity, boolean hideNavigationBar) {
+        if (activity == null) return;
+
+        Window window = activity.getWindow();
+
+        // 清除全屏标志，避免重复设置
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // 设置全屏标志
+        int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+        if (hideNavigationBar) {
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            // API 16+
+            window.getDecorView().setSystemUiVisibility(flags);
+        } else {
+            // 旧版本使用全屏标志
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+        // 设置状态栏透明（API 21+）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+
+            if (hideNavigationBar) {
+                window.setNavigationBarColor(Color.TRANSPARENT);
+            }
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+          TIMPushManager.getInstance().disablePostNotificationInForeground(false);
+
     }
 
 }

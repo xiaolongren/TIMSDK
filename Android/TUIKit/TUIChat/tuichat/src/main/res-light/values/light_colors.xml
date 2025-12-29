@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="chat_input_layout_bg_light">#EBF0F6</color>
+<!--    <color name="chat_input_layout_bg_light">#EBF0F6</color>-->
+    <color name="chat_input_layout_bg_light">#ffffff</color>
 
     <color name="chat_unread_dot_bg_color_light">#FFAABCDE</color>
     <color name="chat_unread_dot_text_color_light">#FFFFFFFF</color>

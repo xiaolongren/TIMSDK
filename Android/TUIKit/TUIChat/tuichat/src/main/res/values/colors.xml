@@ -8,7 +8,8 @@
     <color name="chat_title_line_color">#E6E6E6</color>
     <color name="input_title_line_color">#D2D2D2</color>
 
-    <color name="chat_title_bar_bg">#EBF0F6</color>
+<!--    <color name="chat_title_bar_bg">#EBF0F6</color>-->
+        <color name="chat_title_bar_bg">#ffffff</color>
 
     <color name="voice_pressed">#DEDEDE</color>
     <color name="voice_normal">#ffffff</color>
