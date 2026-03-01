@@ -79,6 +79,25 @@ public class ImViewModel extends ViewModel {
 
                 });
     }
+
+
+
+    void sendBuyNotif(){
+        String  loadListenerInfoPath = "https://app.xiyouqingsu.com/usergroup/listener/sendBuyNotif";
+        Map<String, Object> paramters = new HashMap<>();;
+        paramters.put("listenerUid",parseUid(imId));
+        RxHttp.get(loadListenerInfoPath)
+                .addAll(paramters)
+                .toObservable(new TypeToken<Response<Integer>>(){}.getType()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+
+
+                }, throwable -> {
+                    //Abnormal callback
+
+
+                });
+    }
     void getUseOrder(){
 
     }

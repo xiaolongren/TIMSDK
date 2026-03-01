@@ -108,7 +108,11 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         fastcall= getIntent().getBooleanExtra("fastcall",false);
         TIMPushManager.getInstance().disablePostNotificationInForeground(true);
 
-        // setFullScreen(this,false);
+
+
+
+        // setFullScreen(this,false)
+        // ;
 
      // StatusBarUtil.setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg),this);
  //        setCustomStatusBar(getResources().getColor(R.color.chat_title_bar_bg));
@@ -154,6 +158,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
                 imViewModel.getChatStatusInfo();
                 imViewModel.getListenerInfo();
 
+                imViewModel.sendBuyNotif();
             }
         }, 32);
 
@@ -303,11 +308,11 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         tvScore.setText(imViewModel.truncateToOneDecimalPlace(listenerVo.commentScore) + "");
         tvHours.setText("" + imViewModel.truncateToOneDecimalPlace((listenerVo.serviceSeconds / 3600.0) + listenerVo.thirdHours));
         tvShenfen.setText(listenerVo.certificateName);
-        tvCommentNum.setText("好评数(" + listenerVo.validCommentCount + ")");
+        tvCommentNum.setText("好评数(" + listenerVo.commentNums + ")");
         tvCommentNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ARouter.getInstance().build(ArouterPath.route_listener_listenerComment).withLong("targetUid", listenerVo.uid).withInt("count",listenerVo.validCommentCount).navigation();
+                ARouter.getInstance().build(ArouterPath.route_listener_listenerComment).withLong("targetUid", listenerVo.uid).withInt("count",listenerVo.commentNums).navigation();
 
             }
         });

@@ -70,7 +70,7 @@ public class TUIConversationFragment extends Fragment {
     private PopupWindow mConversationPopWindow;
     private List<PopMenuAction> mConversationPopActions = new ArrayList<>();
 
-    private ConversationPresenter presenter;
+    public ConversationPresenter presenter;
 
     @Nullable
     @Override
@@ -102,6 +102,7 @@ public class TUIConversationFragment extends Fragment {
 
     public void refresh(){
       //  mConversationLayout.up(0,0);
+
          presenter.loadMoreConversation();
         // presenter.updateAdapter();
         System.out.println("refreshrefreshrefreshrefresh");
@@ -181,7 +182,7 @@ public class TUIConversationFragment extends Fragment {
         });
 
         restoreConversationItemBackground();
-        mBaseView.findViewById(R.id.tv_open).setOnClickListener(new View.OnClickListener() {
+        mBaseView.findViewById(R.id.lv_notif).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -189,6 +190,7 @@ public class TUIConversationFragment extends Fragment {
                 openNotificationSettings(getContext());
             }
         });
+
     }
 
     public void restoreConversationItemBackground() {

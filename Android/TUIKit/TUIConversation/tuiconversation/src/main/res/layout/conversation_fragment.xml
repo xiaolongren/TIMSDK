@@ -15,16 +15,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/lv_notif"
-            android:background="@color/main_theme_color"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:background="#FACCC5"
             android:layout_height="40dp">
             <TextView
-                android:paddingLeft="18dp"
+                android:paddingLeft="8dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/white"
-                android:text="为能及时接收聊天消息/语音通话，请打开通知权限 》"
+                android:textColor="#F23315"
+                android:layout_weight="1"
+                android:text="打开通知，可及时接收到聊天消息"
                 android:id="@+id/tv_open"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+            <TextView
+
+
+                android:layout_marginRight="16dp"
+                android:id="@+id/btn_set"
+                android:layout_width="50dp"
+                android:textSize="16dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="设置"
+                android:clickable="false"
+                android:background="@drawable/bg_notif_set"
+                android:layout_height="30dp"/>
 
         </LinearLayout>
     </RelativeLayout>

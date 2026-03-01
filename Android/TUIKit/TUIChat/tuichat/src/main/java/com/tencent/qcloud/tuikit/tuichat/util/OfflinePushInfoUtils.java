@@ -20,6 +20,7 @@ public class OfflinePushInfoUtils {
         v2TIMOfflinePushInfo.setIOSSound(offlinePushInfo.getIOSSoundFilePath());
         v2TIMOfflinePushInfo.setIgnoreIOSBadge(offlinePushInfo.isIgnoreIOSBadge());
         v2TIMOfflinePushInfo.setAndroidSound(offlinePushInfo.getAndroidSound());
+        v2TIMOfflinePushInfo.setAndroidHonorImportance("NORMAL");
         return v2TIMOfflinePushInfo;
     }
 }
