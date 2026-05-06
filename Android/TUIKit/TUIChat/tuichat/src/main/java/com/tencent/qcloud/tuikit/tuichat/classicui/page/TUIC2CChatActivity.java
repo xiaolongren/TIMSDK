@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
@@ -45,15 +47,20 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tim.push.TIMPushManager;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
+import com.tencent.qcloud.tuikit.timcommon.bean.TUIMessageBean;
 import com.tencent.qcloud.tuikit.tuichat.R;
 import com.tencent.qcloud.tuikit.tuichat.bean.C2CChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.ChatInfo;
 import com.tencent.qcloud.tuikit.tuichat.bean.InputMoreItem;
 import com.tencent.qcloud.tuikit.tuichat.bean.custom.ChatStatusInfo;
+import com.tencent.qcloud.tuikit.tuichat.bean.custom.QuickEntryCategory;
 import com.tencent.qcloud.tuikit.tuichat.config.classicui.TUIChatConfigClassic;
 import com.tencent.qcloud.tuikit.tuichat.presenter.C2CChatPresenter;
 import com.tencent.qcloud.tuikit.tuichat.util.StatusBarUtil;
 import com.tencent.qcloud.tuikit.tuichat.util.TUIChatLog;
+import com.tencent.qcloud.tuikit.tuichat.bean.message.TextMessageBean;
+import com.tencent.qcloud.tuikit.tuichat.classicui.widget.QuickEntryDialog;
+import com.tencent.qcloud.tuikit.tuichat.util.ChatMessageBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -280,6 +287,7 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
         if(chatStatusInfo.isListener){
             initChatInputMoreDataSource();
         }
+        initQuickEntry(chatStatusInfo);
         if(fastcall){
             fastcall=false;
             String url= chatFragment.getChatInfo().getFaceUrl();
@@ -545,6 +553,42 @@ public class TUIC2CChatActivity extends TUIBaseChatActivity {
 
                 });
     }
+
+    void initQuickEntry(ChatStatusInfo chatStatusInfo) {
+        if(chatStatusInfo.isListener){
+            return;
+        }
+        List<QuickEntryCategory> categories = chatStatusInfo.quickEntryCategories;
+        if (categories == null || categories.isEmpty()) {
+            return;
+        }
+
+        View shortcutContainer = chatFragment.getView().findViewById(R.id.shortcut_container);
+        if (shortcutContainer == null) {
+            return;
+        }
+
+        View quickEntryBar = LayoutInflater.from(this).inflate(R.layout.chat_quick_entry_bar, (ViewGroup) shortcutContainer, false);
+        LinearLayout llContainer = quickEntryBar.findViewById(R.id.ll_quick_entry_container);
+
+        for (QuickEntryCategory category : categories) {
+            View chipView = LayoutInflater.from(this).inflate(R.layout.chat_quick_entry_chip, llContainer, false);
+            TextView tvEntry = chipView.findViewById(R.id.tv_entry);
+            tvEntry.setText(category.getName());
+            tvEntry.setOnClickListener(v -> {
+                QuickEntryDialog dialog = new QuickEntryDialog(TUIC2CChatActivity.this, category, question -> {
+                    TUIMessageBean messageBean = ChatMessageBuilder.buildTextMessage(question);
+                    chatFragment.getPresenter().sendMessage(messageBean, chatFragment.getChatInfo().getId(), false, false);
+                });
+                dialog.show();
+            });
+            llContainer.addView(chipView);
+        }
+
+        ((ViewGroup) shortcutContainer).addView(quickEntryBar);
+        shortcutContainer.setVisibility(View.VISIBLE);
+    }
+
    public void  showGetFreeOrderNotif(){
         new AlertDialog.Builder(this).setTitle("温馨提示").setMessage("1、新用户首单免费只有一次机会，重新注册账号不会再次获得免费机会。\n 2、建议与咨询师取得联系后再领取免费订单，以免浪费机会。").setPositiveButton("取消", new DialogInterface.OnClickListener() {
             @Override

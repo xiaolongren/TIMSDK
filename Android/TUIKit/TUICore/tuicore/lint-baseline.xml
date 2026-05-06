@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.5.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.5.0)" variant="all" version="8.5.0">
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().putString(key, value).commit();"
+        errorLine2="                                                            ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="68"
+            column="61"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().putBoolean(key, value).commit();"
+        errorLine2="                                                             ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="81"
+            column="62"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().putInt(key, value).commit();"
+        errorLine2="                                                         ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="94"
+            column="58"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().putFloat(key, value).commit();"
+        errorLine2="                                                           ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="107"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().putLong(key, value).commit();"
+        errorLine2="                                                          ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="120"
+            column="59"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().remove(key).commit();"
+        errorLine2="                                                  ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="168"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="ApplySharedPref"
+        message="Consider using `apply()` instead; `commit` writes its data to persistent storage immediately, whereas `apply` will handle it in the background"
+        errorLine1="            mSharedPreferences.edit().clear().commit();"
+        errorLine2="                                              ~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/SPUtils.java"
+            line="180"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="InternalInsetResource"
+        message="Using internal inset dimension resource `navigation_bar_height` is not supported"
+        errorLine1="        int resourceId = context.getResources().getIdentifier(&quot;navigation_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;);"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/ScreenUtil.java"
+            line="50"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 30 (current min is 26): `android.widget.Toast#addCallback`"
+        errorLine1="                    toast.addCallback(new Toast.Callback() {"
+        errorLine2="                          ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/ToastUtil.java"
+            line="65"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Class requires API level 30 (current min is 26): `android.widget.Toast.Callback`"
+        errorLine1="                    toast.addCallback(new Toast.Callback() {"
+        errorLine2="                                          ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/ToastUtil.java"
+            line="65"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Implicit cast to `Callback` requires API level 30 (current min is 26)"
+        errorLine1="                    toast.addCallback(new Toast.Callback() {"
+        errorLine2="                                      ^">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/ToastUtil.java"
+            line="65"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateApi"
+        message="Accessing internal APIs via reflection is not supported and may not work on all devices or in the future"
+        errorLine1="            Class systemProperties = Class.forName(&quot;android.os.systemProperties&quot;);"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/TUIBuild.java"
+            line="234"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateApi"
+        message="Accessing internal APIs via reflection is not supported and may not work on all devices or in the future"
+        errorLine1="            final Method declaredMethod = Class.forName(&quot;android.app.ActivityThread&quot;, false, Application.class.getClassLoader())"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/TUIThemeManager.java"
+            line="123"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0 but `getColumnIndex` can be -1"
+        errorLine1="                int result = cursor.getInt(cursor.getColumnIndex(&quot;currentstate&quot;));"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="502"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/DateTimeUtil.java"
+            line="140"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/DateTimeUtil.java"
+            line="152"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="AppBundleLocaleChanges"
+        message="Found dynamic locale changes, but did not find corresponding Play Core library calls for downloading languages and splitting by language is not disabled in the `bundle` configuration"
+        errorLine1="        configuration.locale = locale;"
+        errorLine2="                      ~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/TUIThemeManager.java"
+            line="251"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="        if (getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() &lt;= 0) {"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionActivity.java"
+            line="134"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="        return getApplicationContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;"
+        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/PermissionRequester.java"
+            line="161"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.3.1 is available: 1.7.0"
+        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.3.1&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="44"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Use of this function is discouraged because resource reflection makes it harder to perform build optimizations and compile-time verification of code. It is much more efficient to retrieve resources by identifier (e.g. `R.foo.bar`) than by name (e.g. `getIdentifier(&quot;bar&quot;, &quot;foo&quot;, null)`)."
+        errorLine1="        int resourceId = context.getResources().getIdentifier(&quot;navigation_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;);"
+        errorLine2="                                                ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/ScreenUtil.java"
+            line="50"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;core_float_permission_hint&quot; is not translated in &quot;ar&quot; (Arabic)"
+        errorLine1="    &lt;string name=&quot;core_float_permission_hint&quot;>Please enable both \&quot;Display pop-up window while running in the background\&quot; and \&quot;Display pop-up Window\&quot; permissions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="17"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="@RequiresApi(api = Build.VERSION_CODES.M)"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionActivity.java"
+            line="41"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="    @RequiresApi(api = Build.VERSION_CODES.M)"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="241"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="    @RequiresApi(api = Build.VERSION_CODES.M)"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/PermissionRequester.java"
+            line="252"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="    @RequiresApi(api = Build.VERSION_CODES.M)"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/util/PermissionRequester.java"
+            line="327"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="360"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="453"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="456"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="474"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/permission/PermissionRequester.java"
+            line="518"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= 25) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/TUIThemeManager.java"
+            line="255"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        message="Do not place Android context classes in static fields (static reference to `TUIRouter` which has field `context` pointing to `Context`); this is a memory leak"
+        errorLine1="    private static final TUIRouter router = new TUIRouter();"
+        errorLine2="            ~~~~~~">
+        <location
+            file="src/main/java/com/tencent/qcloud/tuicore/TUIRouter.java"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;TUIKitErrorSDKGroupInvalidID&quot;>群組 ID 非法，自定義群組 ID 必須為可打印 ASCII 字符（0x20-0x7e），最長48個字節，且前綴不能為 @TGS#&lt;/string>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rHK/im_error_msg.xml"
+            line="41"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;TUIKitErrorSDKGroupInvalidID&quot;>Invalid group ID. Custom group ID must be printable ASCII characters (0x20-0x7e), with maximum length of 48 bytes, and cannot be prefixed with @TGS#.&lt;/string>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/im_error_msg.xml"
+            line="41"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;TUIKitErrorSDKGroupInvalidID&quot;>معرف المجموعة غير صالح، يجب أن يكون معرف المجموعة المخصص قابلًا للطباعة باستخدام ASCII (0x20-0x7e) ويصل إلى 48 بايتًا ، ولا يمكن أن يبدأ البادئة بـ @TGS#&lt;/string>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ar/im_error_msg.xml"
+            line="42"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;TUIKitErrorSDKGroupInvalidID&quot;>群组 ID 非法，自定义群组 ID 必须为可打印 ASCII 字符（0x20-0x7e），最长48个字节，且前缀不能为 @TGS#&lt;/string>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh/im_error_msg.xml"
+            line="42"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/permission_activity_layout.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+</issues>

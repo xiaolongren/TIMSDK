@@ -108,12 +108,12 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
 
 
-    implementation 'com.tencent.timpush:timpush:8.8.7357'
+    implementation 'com.tencent.timpush:timpush:8.9.7537'
 
 
 
 
-    implementation 'com.xy:dufubase:1.9.1'
+    implementation 'com.xy:dufubase:2.0.3'
     api project(':timcommon')
 
  }

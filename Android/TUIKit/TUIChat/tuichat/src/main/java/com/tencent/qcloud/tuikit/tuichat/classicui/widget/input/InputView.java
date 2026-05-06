@@ -716,6 +716,9 @@ public class InputView extends LinearLayout implements View.OnClickListener, Tex
                 showFaceViewGroup();
             }
         } else if (view.getId() == R.id.more_btn) {
+            if(!checkCanSend()){
+                return;
+            }
             hideSoftInput();
             if (mMoreInputEvent instanceof View.OnClickListener) {
                 ((View.OnClickListener) mMoreInputEvent).onClick(view);

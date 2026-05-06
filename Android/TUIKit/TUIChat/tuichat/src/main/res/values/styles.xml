@@ -48,4 +48,10 @@
         <item name="android:windowMinWidthMinor">85%</item>
     </style>
 
+    <style name="QuickEntryDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialog.Animation</item>
+    </style>
+
 </resources>

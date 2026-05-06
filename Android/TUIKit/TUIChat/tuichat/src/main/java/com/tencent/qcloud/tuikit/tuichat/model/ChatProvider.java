@@ -357,18 +357,32 @@ public class ChatProvider {
         }
         v2TIMOfflinePushInfo.setExt(new Gson().toJson(offlinePushExtInfo).getBytes());
         // OPPO must set a ChannelID to receive push messages. This channelID needs to be the same as the console.
-        v2TIMOfflinePushInfo.setAndroidOPPOChannelID("tuikit");
-        if (TUIChatConfigs.getConfigs().getGeneralConfig().isEnableAndroidPrivateRing()) {
-            v2TIMOfflinePushInfo.setAndroidSound(OfflinePushInfoUtils.PRIVATE_RING_NAME);
-            v2TIMOfflinePushInfo.setAndroidFCMChannelID(OfflinePushInfoUtils.FCM_PUSH_CHANNEL_ID);
-        }
+//        v2TIMOfflinePushInfo.setAndroidOPPOChannelID("tuikit");
+//        if (TUIChatConfigs.getConfigs().getGeneralConfig().isEnableAndroidPrivateRing()) {
+//            v2TIMOfflinePushInfo.setAndroidSound(OfflinePushInfoUtils.PRIVATE_RING_NAME);
+//            v2TIMOfflinePushInfo.setAndroidFCMChannelID(OfflinePushInfoUtils.FCM_PUSH_CHANNEL_ID);
+//        }
         v2TIMOfflinePushInfo.setAndroidHuaWeiCategory("IM");
+//        v2TIMOfflinePushInfo.setAndroidSound("shortmsg");
         v2TIMOfflinePushInfo.setAndroidVIVOCategory("IM");
         v2TIMOfflinePushInfo.setAndroidOPPOChannelID("IM");
         v2TIMOfflinePushInfo.setAndroidXiaoMiChannelID("112208");
-       // v2TIMOfflinePushInfo.setAndroidOPPOCategory("IM");
-        v2TIMOfflinePushInfo.setAndroidOPPOChannelID("IM");
+//        v2TIMOfflinePushInfo.setAndroidXiaoMiChannelID("112227");
+        v2TIMOfflinePushInfo.setAndroidOPPOCategory("IM");
+        v2TIMOfflinePushInfo.setHarmonyCategory("IM");
+//        v2TIMOfflinePushInfo.setAndroidSound("shortmsg");
         v2TIMOfflinePushInfo.setAndroidHonorImportance("NORMAL");
+
+
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("harmonySound", "shortmsg.mp3");
+//        map.put("harmonySoundDuration", 1);
+        String param = new Gson().toJson(map);
+        v2TIMOfflinePushInfo.setVendorParams(param);
+
+
 
         return v2TIMOfflinePushInfo;
     }
